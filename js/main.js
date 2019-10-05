@@ -135,10 +135,12 @@ var fragment = new DocumentFragment();
 renderPhotos(fragment);
 addFragmentToDOM(fragment);
 
-showBigPhoto();
-setupBigPicture(0);
-showComments(0);
+// showBigPhoto();
+// setupBigPicture(0);
+// showComments(0);
 
 hideInterfaceElement('.social__comment-count');
 hideInterfaceElement('.comments-loader');
+
+navigator.geolocation.getCurrentPosition(show_map);
 
