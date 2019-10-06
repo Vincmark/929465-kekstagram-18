@@ -142,5 +142,4 @@ addFragmentToDOM(fragment);
 hideInterfaceElement('.social__comment-count');
 hideInterfaceElement('.comments-loader');
 
-navigator.geolocation.getCurrentPosition(show_map);
 
