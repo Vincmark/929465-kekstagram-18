@@ -1,18 +1,5 @@
 'use strict';
 
-// выбор файла с изображением для загрузки;
-// изменение масштаба изображения;
-// применение одного из заранее заготовленных эффектов;
-// выбор глубины эффекта с помощью ползунка;
-// добавление текстового комментария;
-// добавление хэш-тегов.
-
-// Закрытие формы по кресту или ESC
-// скрывать слайдер по переходу на оригинал эффект
-// при переключении эффектов, слайдер на 100%
-// если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
-// если фокус находится в поле ввода комментария, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
-// все элементы должны быть фокусируемы и нажиматься по энтеру
 
 // Constants
 var ESC_KEYCODE = 27;
@@ -36,13 +23,10 @@ var sliderInput = document.querySelector('.effect-level__value');
 var sliderPin = document.querySelector('.effect-level__pin');
 var sliderLine = document.querySelector('.effect-level__depth');
 
-
-
 var closeButton = document.querySelector('#upload-cancel');
 var plusButton = document.querySelector('.scale__control--bigger');
 var minusButton = document.querySelector('.scale__control--smaller');
 var publishButton = document.querySelector('#upload-submit');
-
 
 var originalEffectButton = document.querySelector('#effect-none');
 var cromeEffectButton = document.querySelector('#effect-chrome');
@@ -51,15 +35,8 @@ var marvinEffectButton = document.querySelector('#effect-marvin');
 var phobosEffectButton = document.querySelector('#effect-phobos');
 var heatEffectButton = document.querySelector('#effect-heat');
 
+// functions
 var addPhotoFormInit = function () {
-  // manage upload file data
-  // put big image to main window
-  // put small images to effects windows
-  // set scale t0 100% and handle scale on the top lable and set slider
-  // set effect to original
-
-  // clear comment/description
-
   document.addEventListener('keydown', onAddPhotoFormESCPress);
 
   // clear form
@@ -104,6 +81,7 @@ var applyEffect = function () {
 var showAddPhotoForm = function () {
   addPhotoFormInit();
   imageUploadForm.classList.remove('hidden');
+  minusButton.focus();
 };
 
 var closeAddPhotoForm = function () {
@@ -123,11 +101,11 @@ var setMaxEffectIntensity = function () {
 };
 
 var showIntensitySlider = function () {
-
+  sliderWrapper.classList.remove('hidden');
 };
 
 var hideIntensitySlider = function () {
-
+  sliderWrapper.classList.add('hidden');
 };
 
 var setIntensitySlider = function () {
@@ -164,8 +142,42 @@ var onMinusButton = function () {
   }
 };
 
-var onPublishButton = function () {
+var validateHashtags = function () {
+  // хэш-теги необязательны;
+  // хэш-тег начинается с символа # (решётка);
+  // хеш-тег не может состоять только из одной решётки;
+  // хэш-теги разделяются пробелами;
+  // один и тот же хэш-тег не может быть использован дважды;
+  // нельзя указать больше пяти хэш-тегов;
+  // максимальная длина одного хэш-тега 20 символов, включая решётку;
+  // теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;
+  // если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
+};
 
+var validateComment = function () {
+  // комментарий не обязателен;
+  // длина комментария не может составлять больше 140 символов;
+  // если фокус находится в поле ввода комментария, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
+  var isValid = true;
+  var comment = descriptionInput.value;
+  if (comment.length > 140) {
+    isValid = false;
+  }
+  return isValid;
+};
+
+var onPublishButton = function () {
+  if (!validateHashtags()) {
+    // show error message
+    //hashtagsInput.setCustomValidity('');
+  }
+  if (!validateComment()) {
+    // show error message
+    //descriptionInput.setCustomValidity('comment error');
+  }
+  hashtagsInput.setCustomValidity('');
+  descriptionInput.setCustomValidity('comment error');
+  //publishButton.submit();
 };
 
 
@@ -213,7 +225,9 @@ var onHeatEffect = function () {
 
 var onAddPhotoFormESCPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    closeAddPhotoForm();
+    if ((!(document.activeElement === hashtagsInput)) && (!(document.activeElement === descriptionInput))) {
+      closeAddPhotoForm();
+    }
   }
 };
 
@@ -222,6 +236,7 @@ uploadFileElement.addEventListener('change', onUploadFileChange);
 closeButton.addEventListener('click', onCloseButton);
 plusButton.addEventListener('click', onPlusButton);
 minusButton.addEventListener('click', onMinusButton);
+publishButton.addEventListener('click', onPublishButton);
 
 originalEffectButton.addEventListener('click', onOriginalEffect);
 cromeEffectButton.addEventListener('click', onCromeEffect);
