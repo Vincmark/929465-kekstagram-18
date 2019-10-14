@@ -1,11 +1,10 @@
 'use strict';
 
-
 // Constants
 var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 
 // Variables
+var scaleLevel = 100;
 var effectIntensity = 100;
 var currentEffect = 'ORIGINAL';
 
@@ -53,6 +52,10 @@ var addPhotoFormDeinit = function () {
   document.removeEventListener('keydown', onAddPhotoFormESCPress);
 };
 
+var applyScale = function () {
+  imagePreview.style.transform = 'scale(' + String(scaleLevel / 100) + ')';
+};
+
 var applyEffect = function () {
   switch (currentEffect) {
     case 'ORIGINAL':
@@ -71,7 +74,7 @@ var applyEffect = function () {
       imagePreview.style.filter = 'blur(' + String((effectIntensity / 25) - 1) + 'px)';
       break;
     case 'HEAT':
-      imagePreview.style.filter = 'brightness(' + String((effectIntensity * (3  / 100))) + ')';
+      imagePreview.style.filter = 'brightness(' + String((effectIntensity * (3 / 100))) + ')';
       break;
     default:
       break;
@@ -87,6 +90,12 @@ var showAddPhotoForm = function () {
 var closeAddPhotoForm = function () {
   addPhotoFormDeinit();
   imageUploadForm.classList.add('hidden');
+};
+
+var setScaleLevel = function () {
+  scaleValue.value = scaleLevel + '%';
+  //sliderPin.style.left = effectIntensity + '%';
+  //sliderLine.style.width = effectIntensity + '%';
 };
 
 var setEffectIntensity = function () {
@@ -125,61 +134,94 @@ var onCloseButton = function () {
 };
 
 var onPlusButton = function () {
-  if (effectIntensity !== 100) {
-    effectIntensity += 25;
-    setEffectIntensity();
-    setIntensitySlider();
-    applyEffect();
+  if (scaleLevel !== 100) {
+    scaleLevel += 25;
+    setScaleLevel();
+    applyScale();
   }
+  // if (effectIntensity !== 100) {
+  //   effectIntensity += 25;
+  //   setEffectIntensity();
+  //   setIntensitySlider();
+  //   applyEffect();
+  // }
 };
 
 var onMinusButton = function () {
-  if (effectIntensity !== 25) {
-    effectIntensity -= 25;
-    setEffectIntensity();
-    setIntensitySlider();
-    applyEffect();
+  if (scaleLevel !== 25) {
+    scaleLevel -= 25;
+    setScaleLevel();
+    applyScale();
   }
+  // if (effectIntensity !== 25) {
+  //   effectIntensity -= 25;
+  //   setEffectIntensity();
+  //   setIntensitySlider();
+  //   applyEffect();
+  // }
 };
 
 var validateHashtags = function () {
-  // хэш-теги необязательны;
-  // хэш-тег начинается с символа # (решётка);
-  // хеш-тег не может состоять только из одной решётки;
-  // хэш-теги разделяются пробелами;
-  // один и тот же хэш-тег не может быть использован дважды;
-  // нельзя указать больше пяти хэш-тегов;
-  // максимальная длина одного хэш-тега 20 символов, включая решётку;
-  // теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;
-  // если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
+  var hashtagsStr = hashtagsInput.value;
+  var hashtags = hashtagsStr.split(' ');
+  var hashtagsNoSpaces = [];
+  var i = 0;
+  var j = 0;
+  for (i = 0; i < hashtags.length; i++) {
+    if (hashtags[i] !== '') {
+      hashtagsNoSpaces.push(hashtags[i].toLowerCase());
+    }
+  }
+  if (hashtagsNoSpaces.length > 5) {
+    hashtagsInput.setCustomValidity('Хэштегов должно быть не больше 5');
+    return false;
+  }
+  // check for #
+  for (i = 0; i < hashtagsNoSpaces.length; i++) {
+    // starts from #
+    if (hashtagsNoSpaces[i][0] !== '#') {
+      hashtagsInput.setCustomValidity('Хэштеги должны начинаться с символа #');
+      return false;
+    }
+    // contains more than #
+    if (hashtagsNoSpaces[i].length === 1) {
+      hashtagsInput.setCustomValidity('Хэштегов не может состоять из одного символа #');
+      return false;
+    }
+    // length under or equal 20 symbols including #
+    if (hashtagsNoSpaces[i].length > 20) {
+      hashtagsInput.setCustomValidity('Длина хэштега не может быть больше 20 символов');
+      return false;
+    }
+  }
+  for (i = 0; i < hashtagsNoSpaces.length; i++) {
+    for (j = i; j < hashtagsNoSpaces.length; j++) {
+      if (hashtagsNoSpaces[i] === hashtagsNoSpaces[j]) {
+        if (i !== j) {
+          hashtagsInput.setCustomValidity('Хэштеги не должны повторяться');
+          return false;
+        }
+      }
+    }
+  }
+  return true;
 };
 
 var validateComment = function () {
-  // комментарий не обязателен;
-  // длина комментария не может составлять больше 140 символов;
-  // если фокус находится в поле ввода комментария, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
-  var isValid = true;
   var comment = descriptionInput.value;
   if (comment.length > 140) {
-    isValid = false;
+    hashtagsInput.setCustomValidity('Комментарий не должен превышать 140 символов');
+    return false;
   }
-  return isValid;
+  return true;
 };
 
 var onPublishButton = function () {
-  if (!validateHashtags()) {
-    // show error message
-    //hashtagsInput.setCustomValidity('');
+  if (validateHashtags() && validateComment()) {
+    // publishButton.submit();
+    console.log('Все гуд! Отправляю');
   }
-  if (!validateComment()) {
-    // show error message
-    //descriptionInput.setCustomValidity('comment error');
-  }
-  hashtagsInput.setCustomValidity('');
-  descriptionInput.setCustomValidity('comment error');
-  //publishButton.submit();
 };
-
 
 var onOriginalEffect = function () {
   hideIntensitySlider();
