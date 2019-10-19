@@ -45,9 +45,9 @@
 
                   <!-- Изменение размера изображения -->
                   <fieldset class="img-upload__scale  scale">
-                    <button type="button" class="scale__control  scale__control--smaller">Уменьшить</button>
-                    <input type="text" class="scale__control  scale__control--value" value="55%" title="Image Scale" name="scale" readonly>
-                    <button type="button" class="scale__control  scale__control--bigger">Увеличить</button>
+                    <button type="button" class="scale__control  scale__control--smaller" tabindex="0">Уменьшить</button>
+                    <input type="text" class="scale__control  scale__control--value" value="55%" title="Image Scale" name="scale" readonly tabIndex="-1">
+                    <button type="button" class="scale__control  scale__control--bigger" tabindex="0">Увеличить</button>
                   </fieldset>
 
                   <!-- Предварительный просмотр изображения -->
@@ -65,49 +65,49 @@
                   </fieldset>
 
                   <!-- Кнопка для закрытия формы редактирования изображения -->
-                  <button type="reset" class="img-upload__cancel  cancel" id="upload-cancel">Закрыть</button>
+                  <button type="reset" class="img-upload__cancel  cancel" id="upload-cancel" tabindex="0">Закрыть</button>
                 </div>
 
                 <!-- Наложение эффекта на изображение -->
                 <fieldset class="img-upload__effects  effects">
                   <ul class="effects__list">
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-none" value="none" checked>
+                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-none" value="none" checked tabindex="0">
                       <label for="effect-none" class="effects__label">
                         <span class="effects__preview  effects__preview--none">Превью фото без эффекта</span>
                         Оригинал
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-chrome" value="chrome">
+                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-chrome" value="chrome" tabindex="0">
                       <label for="effect-chrome" class="effects__label">
                         <span class="effects__preview  effects__preview--chrome">Превью эффекта Хром</span>
                         Хром
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-sepia" value="sepia">
+                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-sepia" value="sepia" tabindex="0">
                       <label for="effect-sepia" class="effects__label">
                         <span class="effects__preview  effects__preview--sepia">Превью эффекта Сепия</span>
                         Сепия
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-marvin" value="marvin">
+                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-marvin" value="marvin" tabindex="0">
                       <label for="effect-marvin" class="effects__label">
                         <span class="effects__preview  effects__preview--marvin">Превью эффекта Марвин</span>
                         Марвин
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-phobos" value="phobos">
+                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-phobos" value="phobos" tabindex="0">
                       <label for="effect-phobos" class="effects__label">
                         <span class="effects__preview  effects__preview--phobos">Превью эффекта Фобос</span>
                         Фобос
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-heat" value="heat">
+                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-heat" value="heat" tabindex="0">
                       <label for="effect-heat" class="effects__label">
                         <span class="effects__preview  effects__preview--heat">Превью эффекта Зной</span>
                         Зной
@@ -235,6 +235,8 @@
   <template id="messages">
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
+  <script src="js/common.js"></script>
+  <script src="js/add-photo.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
