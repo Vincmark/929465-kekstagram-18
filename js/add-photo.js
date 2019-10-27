@@ -219,6 +219,7 @@
     return true;
   };
 
+<<<<<<< HEAD
   var onPublishButton = function (evt) {
     evt.preventDefault();
     var hashtagValidation = validateHashtags();
@@ -238,6 +239,8 @@
     }
   };
 
+=======
+>>>>>>> 3b8c8413780f28a8f02bffc1b9f687e4857cf19d
   var onOriginalEffect = function () {
     hideIntensitySlider();
     setEffectIntensity(100);
@@ -320,6 +323,23 @@
 
     document.addEventListener('mousemove', onSliderPinDragMove);
     document.addEventListener('mouseup', onSliderPinDragEnd);
+  };
+
+  var onPublishButton = function (evt) {
+    evt.preventDefault();
+    if (validateHashtags() && validateComment()) {
+      //
+    }
+
+    var onError = function (message) {
+      console.error(message);
+    };
+
+    var onSuccess = function (data) {
+      console.log(data);
+    };
+    publishButton.click();
+    window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
   };
 
   // setup listeners
