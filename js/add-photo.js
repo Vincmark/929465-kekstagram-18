@@ -195,6 +195,7 @@
         return false;
       }
     }
+
     for (i = 0; i < hashtagsNoSpaces.length; i++) {
       for (j = i; j < hashtagsNoSpaces.length; j++) {
         if (hashtagsNoSpaces[i] === hashtagsNoSpaces[j]) {
@@ -220,19 +221,21 @@
 
   var onPublishButton = function (evt) {
     evt.preventDefault();
-    if (validateHashtags() && validateComment()) {
+    var hashtagValidation = validateHashtags();
+    var commentValidation = validateComment();
+
+    if (hashtagValidation && commentValidation) {
       //
+      var onError = function (message) {
+        console.error(message);
+      };
+
+      var onSuccess = function (data) {
+        console.log(data);
+      };
+      // publishButton.click();
+      window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
     }
-
-    var onError = function (message) {
-      console.error(message);
-    };
-
-    var onSuccess = function (data) {
-      console.log(data);
-    };
-    publishButton.click();
-    window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
   };
 
   var onOriginalEffect = function () {
