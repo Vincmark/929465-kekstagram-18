@@ -1,8 +1,6 @@
 'use strict';
 (function () {
 
-  // Constants
-  var ESC_KEYCODE = 27;
 
   // Variables
   var scaleLevel = 100;
@@ -219,7 +217,6 @@
     return true;
   };
 
-<<<<<<< HEAD
   var onPublishButton = function (evt) {
     evt.preventDefault();
     var hashtagValidation = validateHashtags();
@@ -227,6 +224,7 @@
 
     if (hashtagValidation && commentValidation) {
       //
+      showUploadMessage();
       var onError = function (message) {
         console.error(message);
       };
@@ -239,8 +237,6 @@
     }
   };
 
-=======
->>>>>>> 3b8c8413780f28a8f02bffc1b9f687e4857cf19d
   var onOriginalEffect = function () {
     hideIntensitySlider();
     setEffectIntensity(100);
@@ -325,22 +321,22 @@
     document.addEventListener('mouseup', onSliderPinDragEnd);
   };
 
-  var onPublishButton = function (evt) {
-    evt.preventDefault();
-    if (validateHashtags() && validateComment()) {
-      //
-    }
-
-    var onError = function (message) {
-      console.error(message);
-    };
-
-    var onSuccess = function (data) {
-      console.log(data);
-    };
-    publishButton.click();
-    window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
-  };
+  // var onPublishButton = function (evt) {
+  //   evt.preventDefault();
+  //   if (validateHashtags() && validateComment()) {
+  //     showUploadMessage();
+  //   }
+  //
+  //   var onError = function (message) {
+  //     console.error(message);
+  //   };
+  //
+  //   var onSuccess = function (data) {
+  //     console.log(data);
+  //   };
+  //   publishButton.click();
+  //   window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
+  // };
 
   // setup listeners
   uploadFileElement.addEventListener('change', onUploadFileChange);
