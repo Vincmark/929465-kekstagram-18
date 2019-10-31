@@ -10,6 +10,8 @@
 </head>
 
 <body>
+  <a id="openForm" href="">Open Form</a>
+  <a id="closeForm" href="">Close Form</a>
   <main>
 
     <!-- Фильтрация изображений от других пользователей -->
@@ -118,7 +120,7 @@
 
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
-                  <input class="text__hashtags" name="hashtags" placeholder="#хэш-тег">
+                  <input class="text__hashtags" style=":" name="hashtags" placeholder="#хэш-тег">
                   <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
                 </fieldset>
 
@@ -236,6 +238,8 @@
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
   <script src="js/common.js"></script>
+  <script src="js/messageForms.js"></script>
+  <script src="js/network.js"></script>
   <script src="js/add-photo.js"></script>
   <script src="js/main.js"></script>
 </body>

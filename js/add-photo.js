@@ -1,8 +1,6 @@
 'use strict';
 (function () {
 
-  // Constants
-  var ESC_KEYCODE = 27;
 
   // Variables
   var scaleLevel = 100;
@@ -13,6 +11,9 @@
   // Elements
   var imageUploadForm = document.querySelector('.img-upload__overlay');
   var uploadFileElement = document.querySelector('#upload-file');
+
+  // form
+  var imageUploadFormData = document.querySelector('.img-upload__form');
 
   //
   var hashtagsInput = document.querySelector('.text__hashtags');
@@ -192,6 +193,7 @@
         return false;
       }
     }
+
     for (i = 0; i < hashtagsNoSpaces.length; i++) {
       for (j = i; j < hashtagsNoSpaces.length; j++) {
         if (hashtagsNoSpaces[i] === hashtagsNoSpaces[j]) {
@@ -215,10 +217,23 @@
     return true;
   };
 
-  var onPublishButton = function () {
-    if (validateHashtags() && validateComment()) {
-      publishButton.submit();
-      // console.log('Все гуд! Отправляю');
+  var onPublishButton = function (evt) {
+    evt.preventDefault();
+    var hashtagValidation = validateHashtags();
+    var commentValidation = validateComment();
+
+    if (hashtagValidation && commentValidation) {
+      //
+      showUploadMessage();
+      var onError = function (message) {
+        console.error(message);
+      };
+
+      var onSuccess = function (data) {
+        console.log(data);
+      };
+      // publishButton.click();
+      window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
     }
   };
 
@@ -305,6 +320,23 @@
     document.addEventListener('mousemove', onSliderPinDragMove);
     document.addEventListener('mouseup', onSliderPinDragEnd);
   };
+
+  // var onPublishButton = function (evt) {
+  //   evt.preventDefault();
+  //   if (validateHashtags() && validateComment()) {
+  //     showUploadMessage();
+  //   }
+  //
+  //   var onError = function (message) {
+  //     console.error(message);
+  //   };
+  //
+  //   var onSuccess = function (data) {
+  //     console.log(data);
+  //   };
+  //   publishButton.click();
+  //   window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
+  // };
 
   // setup listeners
   uploadFileElement.addEventListener('change', onUploadFileChange);
