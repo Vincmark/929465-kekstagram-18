@@ -43,7 +43,6 @@
       var onPictureClick = function () {
         console.log('picture clicked' + this.id);
         initBigPhoto(this.id);
-
       };
 
       allPictures.forEach(function (image) {
