@@ -3,6 +3,7 @@
   window.photos = [];
   window.loadPhotos = function () {
     var onError = function (message) {
+      showErrorMessage(message, ['Попробовать снова', 'ОК']);
       console.error(message);
     };
 

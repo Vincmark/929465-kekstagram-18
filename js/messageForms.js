@@ -3,6 +3,8 @@
 var uploadMessageForm = null;
 var errorMessageForm = null;
 var successMessageForm = null;
+var errorMessageText = null;
+var errorMessageButtons = null;
 
 
 var showUploadMessage = function () {
@@ -16,16 +18,38 @@ var closeUploadMessage = function () {
   document.body.removeChild(uploadMessageForm);
 };
 
-var showErrorMessage = function () {
-  var errorMessageTemplate = document.querySelector('#error').content.querySelector('section');
+var onErrorButton1 = function (evt) {
+  evt.preventDefault();
+  closeErrorMessage();
+  setTimeout(loadPhotos, 3000);
+};
+
+var onErrorButton2 = function (evt) {
+  evt.preventDefault();
+  closeErrorMessage();
+};
+
+var showErrorMessage = function (errorText, buttons) {
+  var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorMessage = errorMessageTemplate.cloneNode(true);
   document.body.querySelector('main').appendChild(errorMessage);
   errorMessageForm = document.querySelector('.error');
+  errorMessageText = errorMessageForm.querySelector('.error__title');
+  errorMessageButtons = errorMessageForm.querySelectorAll('.error__button');
+  errorMessageText.textContent = errorText;
+  errorMessageButtons[0].textContent = buttons[0];
+  errorMessageButtons[1].textContent = buttons[1];
+  errorMessageButtons[0].addEventListener('click', onErrorButton1);
+  errorMessageButtons[1].addEventListener('click', onErrorButton2);
 };
 
 var closeErrorMessage = function () {
-  document.body.removeChild(errorMessageForm);
+  // delete event listener
+  errorMessageButtons[0].removeEventListener('click', onErrorButton1);
+  errorMessageButtons[1].removeEventListener('click', onErrorButton2);
+  document.body.querySelector('main').removeChild(errorMessageForm);
 };
+
 
 var showSuccessMessage = function () {
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
