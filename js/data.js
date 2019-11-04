@@ -2,8 +2,20 @@
 (function () {
   window.photos = [];
   window.loadPhotos = function () {
+
+    var onReload = function (evt) {
+      evt.preventDefault();
+      closeErrorMessage();
+      setTimeout(loadPhotos, 1000);
+    };
+
+    var onCancel = function (evt) {
+      evt.preventDefault();
+      closeErrorMessage();
+    };
+
     var onError = function (message) {
-      showErrorMessage(message, ['Попробовать снова', 'ОК']);
+      showErrorMessage(message, ['Попробовать снова', 'ОК'], [onReload, onCancel]);
       console.error(message);
     };
 
