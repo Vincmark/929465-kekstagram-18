@@ -61,12 +61,63 @@
       allPictures.forEach(function (image) {
         image.addEventListener('click', onPictureClick);
       });
-
-      var photo1 = window.photos[0];
-      var comment1 = photo1['comments'][0];
+      showFilter();
 
     };
 
     window.loadNoForm('https://js.dump.academy/kekstagram/data', onSuccess, onError);
   };
 })();
+
+// filter
+(function () {
+
+  var filterBlock = document.querySelector('.img-filters');
+  var filterPopularButton = filterBlock.querySelector('#filter-popular');
+  var filterRandomButton = filterBlock.querySelector('#filter-random');
+  var filterDiscussedButton = filterBlock.querySelector('#filter-discussed');
+
+  var lastTimeout;
+
+  var onPopularButton = function () {
+    filterPopularButton.classList.add('img-filters__button--active');
+    filterRandomButton.classList.remove('img-filters__button--active');
+    filterDiscussedButton.classList.remove('img-filters__button--active');
+
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(function() { console.log('popular button pressed'); }, 300);
+  };
+
+  var onRandomButton = function () {
+    filterPopularButton.classList.remove('img-filters__button--active');
+    filterRandomButton.classList.add('img-filters__button--active');
+    filterDiscussedButton.classList.remove('img-filters__button--active');
+  };
+
+  var onDiscussedButton = function () {
+    filterPopularButton.classList.remove('img-filters__button--active');
+    filterRandomButton.classList.remove('img-filters__button--active');
+    filterDiscussedButton.classList.add('img-filters__button--active');
+  };
+
+  window.showFilter = function () {
+    if (filterBlock.classList.contains('img-filters--inactive')) {
+      filterBlock.classList.remove('img-filters--inactive');
+    }
+    filterPopularButton.addEventListener('click', onPopularButton);
+    filterRandomButton.addEventListener('click', onRandomButton);
+    filterDiscussedButton.addEventListener('click', onDiscussedButton);
+  };
+
+  window.closeFilter = function () {
+    filterPopularButton.removeEventListener('click', onPopularButton);
+    filterRandomButton.removeEventListener('click', onRandomButton);
+    filterDiscussedButton.removeEventListener('click', onDiscussedButton);
+    if (!filterBlock.classList.contains('img-filters--inactive')) {
+      filterBlock.classList.add('img-filters--inactive');
+    }
+  };
+})();
+

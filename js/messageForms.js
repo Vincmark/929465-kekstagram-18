@@ -3,10 +3,10 @@
 // error message
 (function () {
 
-  var errorMessageForm = null;
-  var errorMessageText = null;
-  var errorMessageButtons = null;
-  var errorMessageCallBacks = null;
+  var errorMessageForm;
+  var errorMessageText;
+  var errorMessageButtons;
+  var errorMessageCallBacks;
 
   window.showErrorMessage = function (errorText, buttons, callBacks) {
     var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
