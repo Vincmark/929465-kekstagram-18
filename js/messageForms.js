@@ -1,100 +1,74 @@
-
 'use strict';
-var uploadMessageForm = null;
-var errorMessageForm = null;
-var successMessageForm = null;
-var errorMessageText = null;
-var errorMessageButtons = null;
 
+// error message
+(function () {
 
-var showUploadMessage = function () {
-  var uploadMessageTemplate = document.querySelector('#messages').content.querySelector('.img-upload__message');
-  var uploadMessage = uploadMessageTemplate.cloneNode(true);
-  document.body.querySelector('.img-upload__overlay').appendChild(uploadMessage);
-  uploadMessageForm = document.querySelector('.img-upload__message');
-};
+  var errorMessageForm = null;
+  var errorMessageText = null;
+  var errorMessageButtons = null;
+  var errorMessageCallBacks = null;
 
-var closeUploadMessage = function () {
-  document.body.removeChild(uploadMessageForm);
-};
+  window.showErrorMessage = function (errorText, buttons, callBacks) {
+    var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+    var errorMessage = errorMessageTemplate.cloneNode(true);
+    errorMessageCallBacks = callBacks;
+    document.body.querySelector('main').appendChild(errorMessage);
+    errorMessageForm = document.querySelector('.error');
+    errorMessageText = errorMessageForm.querySelector('.error__title');
+    errorMessageButtons = errorMessageForm.querySelectorAll('.error__button');
+    errorMessageText.textContent = errorText;
+    errorMessageButtons[0].textContent = buttons[0];
+    errorMessageButtons[1].textContent = buttons[1];
+    errorMessageButtons[0].addEventListener('click', errorMessageCallBacks[0]);
+    errorMessageButtons[1].addEventListener('click', errorMessageCallBacks[1]);
+  };
 
-var onErrorButton1 = function (evt) {
-  evt.preventDefault();
-  closeErrorMessage();
-  setTimeout(loadPhotos, 3000);
-};
+  window.closeErrorMessage = function () {
+    errorMessageButtons[0].removeEventListener('click', errorMessageCallBacks[0]);
+    errorMessageButtons[1].removeEventListener('click', errorMessageCallBacks[1]);
+    document.body.querySelector('main').removeChild(errorMessageForm);
+  };
 
-var onErrorButton2 = function (evt) {
-  evt.preventDefault();
-  closeErrorMessage();
-};
+})();
 
-var showErrorMessage = function (errorText, buttons) {
-  var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
-  var errorMessage = errorMessageTemplate.cloneNode(true);
-  document.body.querySelector('main').appendChild(errorMessage);
-  errorMessageForm = document.querySelector('.error');
-  errorMessageText = errorMessageForm.querySelector('.error__title');
-  errorMessageButtons = errorMessageForm.querySelectorAll('.error__button');
-  errorMessageText.textContent = errorText;
-  errorMessageButtons[0].textContent = buttons[0];
-  errorMessageButtons[1].textContent = buttons[1];
-  errorMessageButtons[0].addEventListener('click', onErrorButton1);
-  errorMessageButtons[1].addEventListener('click', onErrorButton2);
-};
+// upload message
+(function () {
 
-var closeErrorMessage = function () {
-  // delete event listener
-  errorMessageButtons[0].removeEventListener('click', onErrorButton1);
-  errorMessageButtons[1].removeEventListener('click', onErrorButton2);
-  document.body.querySelector('main').removeChild(errorMessageForm);
-};
+  var uploadMessageForm = null;
 
+  window.showUploadMessage = function () {
+    var uploadMessageTemplate = document.querySelector('#messages').content.querySelector('div');
+    var uploadMessage = uploadMessageTemplate.cloneNode(true);
+    document.body.querySelector('main').appendChild(uploadMessage);
+    uploadMessageForm = document.querySelector('.img-upload__message');
+  };
 
-var showSuccessMessage = function () {
-  var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
-  var successMessage = successMessageTemplate.cloneNode(true);
-  document.body.appendChild(successMessage);
-  successMessageForm = document.querySelector('.success');
-};
+  window.closeUploadMessage = function () {
+    document.body.querySelector('main').removeChild(uploadMessageForm);
+  };
 
-var closeSuccessMessage = function () {
-  document.body.removeChild(successMessageForm);
-};
+})();
 
-var onOpenFormButton = function (evt) {
-  evt.preventDefault();
-  showErrorMessage();
-  //showUploadMessage();
-  //showSuccessMessage();
+// success message
+(function () {
 
+  var successMessageForm = null;
+  var successMessageButton = null;
+  var successButtonCallBack = null;
 
-  // var errorBtns = errorMessageForm.querySelectorAll('.error__button');
-  // var onTryAgainButton = function (evt) {
-  //   evt.preventDefault();
-  //   console.log('onTryAgain');
-  // };
-  //
-  // var onLoadAnotherFileButton = function (evt) {
-  //   evt.preventDefault();
-  //   console.log('onAnotherr file');
-  //   document.body.removeChild(errorMessageForm);
-  // };
-  //
-  // errorBtns[0].addEventListener('click', onTryAgainButton);
-  // errorBtns[1].addEventListener('click', onLoadAnotherFileButton);
+  window.showSuccessMessage = function (ButtonCallBack) {
+    var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+    var successMessage = successMessageTemplate.cloneNode(true);
+    document.body.querySelector('main').appendChild(successMessage);
+    successMessageForm = document.querySelector('.success');
+    successMessageButton = successMessageForm.querySelector('.success__button');
+    successButtonCallBack = ButtonCallBack;
+    successMessageButton.addEventListener('click', successButtonCallBack);
+  };
 
-};
+  window.closeSuccessMessage = function () {
+    successMessageButton.removeEventListener('click', successButtonCallBack);
+    document.body.querySelector('main').removeChild(successMessageForm);
+  };
 
-var onCloseFormButton = function (evt) {
-  evt.preventDefault();
-  closeErrorMessage();
-
-  //document.body.removeChild(errorMessageForm);
-};
-
-var openFormButton = document.querySelector('#openForm');
-openFormButton.addEventListener('click', onOpenFormButton);
-
-var closeFormButton = document.querySelector('#closeForm');
-closeFormButton.addEventListener('click', onCloseFormButton);
+})();

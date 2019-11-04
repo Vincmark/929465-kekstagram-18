@@ -159,6 +159,7 @@
   };
 
   var validateHashtags = function () {
+    return true;
     hashtagsInput.setCustomValidity('');
     var hashtagsStr = hashtagsInput.value;
     var hashtags = hashtagsStr.split(' ');
@@ -224,16 +225,40 @@
 
     if (hashtagValidation && commentValidation) {
       //
-      showUploadMessage();
+
+      var onReload = function (evt) {
+        evt.preventDefault();
+        closeErrorMessage();
+        showAddPhotoForm();
+      };
+
+      var onCancel = function (evt) {
+        evt.preventDefault();
+        closeErrorMessage();
+        closeAddPhotoForm();
+      };
+
+      var onOK = function (evt) {
+        evt.preventDefault();
+        closeSuccessMessage();
+      };
+
       var onError = function (message) {
         console.error(message);
+        closeUploadMessage();
+        closeAddPhotoForm();
+        showErrorMessage(message, ['Попробовать снова', 'Загрузить другой файл'], [onReload, onCancel]);
       };
 
       var onSuccess = function (data) {
         console.log(data);
+        closeUploadMessage();
+        closeAddPhotoForm();
+        showSuccessMessage(onOK);
       };
-      // publishButton.click();
       window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
+      showUploadMessage();
+
     }
   };
 
@@ -320,23 +345,6 @@
     document.addEventListener('mousemove', onSliderPinDragMove);
     document.addEventListener('mouseup', onSliderPinDragEnd);
   };
-
-  // var onPublishButton = function (evt) {
-  //   evt.preventDefault();
-  //   if (validateHashtags() && validateComment()) {
-  //     showUploadMessage();
-  //   }
-  //
-  //   var onError = function (message) {
-  //     console.error(message);
-  //   };
-  //
-  //   var onSuccess = function (data) {
-  //     console.log(data);
-  //   };
-  //   publishButton.click();
-  //   window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
-  // };
 
   // setup listeners
   uploadFileElement.addEventListener('change', onUploadFileChange);
