@@ -34,7 +34,7 @@
 // upload message
 (function () {
 
-  var uploadMessageForm = null;
+  var uploadMessageForm;
 
   window.showUploadMessage = function () {
     var uploadMessageTemplate = document.querySelector('#messages').content.querySelector('div');
@@ -52,9 +52,9 @@
 // success message
 (function () {
 
-  var successMessageForm = null;
-  var successMessageButton = null;
-  var successButtonCallBack = null;
+  var successMessageForm;
+  var successMessageButton;
+  var successButtonCallBack;
 
   window.showSuccessMessage = function (ButtonCallBack) {
     var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
