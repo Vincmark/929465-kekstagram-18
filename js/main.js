@@ -1,17 +1,5 @@
 'use strict';
 
-
-
-
-
-
-
-
-
-
-
-
-
 loadPhotos();
 
 
