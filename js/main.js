@@ -30,15 +30,15 @@ var showInterfaceElement = function (elementClass) {
 var setupBigPicture = function () {
   var picture = document.querySelector('.big-picture');
   var image = picture.querySelector('.big-picture__img').children[0];
-  image.src = window.photos[currentBigPhoto]['url'];
+  image.src = window.filteredPhotos[currentBigPhoto]['url'];
 
   //
   var likesCount = picture.querySelector('.likes-count');
-  likesCount.textContent = window.photos[currentBigPhoto].likes;
+  likesCount.textContent = window.filteredPhotos[currentBigPhoto].likes;
 
   //
   var photoDescription = picture.querySelector('.social__caption');
-  photoDescription.textContent = window.photos[currentBigPhoto].description;
+  photoDescription.textContent = window.filteredPhotos[currentBigPhoto].description;
 
   // delete comments
   var commentsContainer = document.querySelector('.social__comments');
@@ -51,7 +51,7 @@ var setupBigPicture = function () {
 var showComments = function () {
   var commentsContainer = document.querySelector('.social__comments');
   var openedComments = commentsContainer.querySelectorAll('.social__comment').length;
-  var commentsCount = window.photos[currentBigPhoto].comments.length;
+  var commentsCount = window.filteredPhotos[currentBigPhoto].comments.length;
 
   var startIndex = openedComments;
   var endIndex = startIndex + LOAD_COMMENTS_PER_ITERATION - 1;
@@ -70,9 +70,9 @@ var showComments = function () {
     var commentAvatar = commentElement.querySelector('.social__picture');
     var commentText = commentElement.querySelector('.social__text');
 
-    commentAvatar.src = window.photos[currentBigPhoto].comments[i]['avatar'];
-    commentAvatar.alt = window.photos[currentBigPhoto].comments[i].name;
-    commentText.textContent = window.photos[currentBigPhoto].comments[i].message;
+    commentAvatar.src = window.filteredPhotos[currentBigPhoto].comments[i]['avatar'];
+    commentAvatar.alt = window.filteredPhotos[currentBigPhoto].comments[i].name;
+    commentText.textContent = window.filteredPhotos[currentBigPhoto].comments[i].message;
     fragment.appendChild(commentElement);
   }
   commentsContainer.appendChild(fragment);
@@ -81,7 +81,7 @@ var showComments = function () {
 
 var setCommentCounter = function () {
   var commentsCounterElement = document.querySelector('.social__comment-count');
-  var commentsCount = window.photos[currentBigPhoto].comments.length;
+  var commentsCount = window.filteredPhotos[currentBigPhoto].comments.length;
   var openedComments = document.querySelectorAll('.social__comment').length;
   commentsCounterElement.innerHTML = openedComments + ' из <span class="comments-count">' + commentsCount + '</span> комментариев';
 };

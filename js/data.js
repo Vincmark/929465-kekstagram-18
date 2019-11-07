@@ -24,7 +24,8 @@
     var onSuccess = function (data) {
       console.log(data);
       window.photos = data;
-      drawPhotos(photos);
+      getInitialPhotos();
+      drawPhotos(filteredPhotos);
     };
 
     window.loadNoForm('https://js.dump.academy/kekstagram/data', onSuccess, onError);
@@ -34,49 +35,76 @@
 // filter photos
 (function () {
   window.filteredPhotos = [];
+
+  window.getInitialPhotos = function () {
+    filteredPhotos = photos.slice();
+  };
+
+  window.getRandomPhotos = function () {
+    filteredPhotos = [];
+    var RandomUniqueNumbers = getRandomUniqueNumbers(0, photos.length - 1, RANDOM_PHOTOS_COUNT);
+    RandomUniqueNumbers.forEach (function(index) {
+      filteredPhotos.push(photos[index]);
+    });
+  };
+
+  window.getDiscussedPhotos = function () {
+    filteredPhotos = photos.slice();
+    filteredPhotos.sort(function compareNumbers(a, b) {
+      return  b.comments.length - a.comments.length;
+    });
+
+  };
+
+  var getRandomUniqueNumbers = function (min, max, count) {
+    var numArray = [];
+    while (numArray.length < count) {
+      var rand = Math.floor(Math.random() * max) + min;
+      if (numArray.indexOf(rand) === -1) {
+        numArray.push(rand);
+      }
+    }
+    return numArray;
+  };
+
 })();
 
 // draw photos
 (function () {
   var i;
   var photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
+  var photosContainer = document.querySelector('.pictures');
 
-  var getPhoto = function (template, index) {
+  var getPhoto = function (template, index, photoDataElement) {
     var photoElement = template.cloneNode(true);
     photoElement.id = index;
-    photoElement.querySelector('.picture__img').src = window.photos[index]['url'];
-    photoElement.querySelector('.picture__comments').textContent = window.photos[index]['comments'].length.toString();
-    photoElement.querySelector('.picture__likes').textContent = window.photos[index]['likes'];
+    photoElement.querySelector('.picture__img').src = photoDataElement['url'];
+    photoElement.querySelector('.picture__comments').textContent = photoDataElement['comments'].length.toString();
+    photoElement.querySelector('.picture__likes').textContent = photoDataElement['likes'];
     return (photoElement);
   };
 
   var renderPhotos = function (fragment, photosArray) {
-    for (i = 0; i < photosArray.length; i++) {
-      fragment.appendChild(getPhoto(photoTemplate, i));
-    }
+    photosArray.forEach(function (element, index) {
+      fragment.appendChild(getPhoto(photoTemplate, index, element));
+    });
     return fragment;
   };
 
   var addFragmentToDOM = function (fragment) {
-    var pictures = document.querySelector('.pictures');
-    pictures.appendChild(fragment);
+    photosContainer.appendChild(fragment);
   };
-
-
-  // console.log (allPictures.length);
 
   var onPictureClick = function () {
     console.log('picture clicked' + this.id);
     initBigPhoto(this.id);
   };
 
-
-
   window.clearPhotos = function () {
-    // var allPhotosInDOM = document.querySelectorAll('.picture');
-    // allPhotosInDOM.forEach() {
-    //
-    // }
+    var allPhotosInDOM = photosContainer.querySelectorAll('.picture');
+    for (i = 0; i < allPhotosInDOM.length; i++) {
+      photosContainer.removeChild(allPhotosInDOM[i]);
+    }
   };
 
   window.drawPhotos = function (photosArray) {
@@ -121,18 +149,24 @@
       window.clearTimeout(lastTimeout);
     }
     lastTimeout = window.setTimeout(function() { console.log('popular button pressed'); }, 300);
+    getInitialPhotos();
+    drawPhotos(filteredPhotos);
   };
 
   var onRandomButton = function () {
     filterPopularButton.classList.remove('img-filters__button--active');
     filterRandomButton.classList.add('img-filters__button--active');
     filterDiscussedButton.classList.remove('img-filters__button--active');
+    getRandomPhotos();
+    drawPhotos(filteredPhotos);
   };
 
   var onDiscussedButton = function () {
     filterPopularButton.classList.remove('img-filters__button--active');
     filterRandomButton.classList.remove('img-filters__button--active');
     filterDiscussedButton.classList.add('img-filters__button--active');
+    getDiscussedPhotos();
+    drawPhotos(filteredPhotos);
   };
 
   window.showFilter = function () {
