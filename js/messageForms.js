@@ -3,10 +3,10 @@
 // error message
 (function () {
 
-  var errorMessageForm = null;
-  var errorMessageText = null;
-  var errorMessageButtons = null;
-  var errorMessageCallBacks = null;
+  var errorMessageForm;
+  var errorMessageText;
+  var errorMessageButtons;
+  var errorMessageCallBacks;
 
   window.showErrorMessage = function (errorText, buttons, callBacks) {
     var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -34,7 +34,7 @@
 // upload message
 (function () {
 
-  var uploadMessageForm = null;
+  var uploadMessageForm;
 
   window.showUploadMessage = function () {
     var uploadMessageTemplate = document.querySelector('#messages').content.querySelector('div');
@@ -52,9 +52,9 @@
 // success message
 (function () {
 
-  var successMessageForm = null;
-  var successMessageButton = null;
-  var successButtonCallBack = null;
+  var successMessageForm;
+  var successMessageButton;
+  var successButtonCallBack;
 
   window.showSuccessMessage = function (ButtonCallBack) {
     var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
