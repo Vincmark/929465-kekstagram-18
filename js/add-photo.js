@@ -20,6 +20,7 @@
   var descriptionInput = document.querySelector('.text__description');
   var scaleValue = document.querySelector('.scale__control--value');
   var imagePreview = document.querySelector('.img-upload__preview');
+  var loadedImage = imagePreview.querySelector('img');
 
   //
   var sliderWrapper = document.querySelector('.img-upload__effect-level');
@@ -133,6 +134,21 @@
 
   // Handlers
   var onUploadFileChange = function () {
+    var file = uploadFileElement.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        loadedImage.src = reader.result;
+      });
+      reader.readAsDataURL(file);
+    }
+
     showAddPhotoForm();
   };
 
