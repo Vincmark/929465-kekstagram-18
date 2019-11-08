@@ -53,7 +53,7 @@ var showComments = function () {
   var commentsCount = window.filteredPhotos[currentBigPhoto].comments.length;
 
   var startIndex = openedComments;
-  var endIndex = startIndex + LOAD_COMMENTS_PER_ITERATION - 1;
+  var endIndex = startIndex + window.LOAD_COMMENTS_PER_ITERATION - 1;
   if ((commentsCount - 1) <= endIndex) {
     endIndex = commentsCount - 1;
     hideInterfaceElement('.comments-loader');
@@ -115,7 +115,7 @@ var onCloseBigPhotoButton = function () {
 };
 
 var onBigPhotoFormESCPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
+  if (evt.keyCode === window.ESC_KEYCODE) {
     deinitBigPhoto();
   }
 };

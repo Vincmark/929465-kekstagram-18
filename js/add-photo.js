@@ -1,5 +1,8 @@
 'use strict';
 (function () {
+  var errorMsg = null;
+  var uploadMsg = null;
+  var successMsg = null;
 
 
   // Variables
@@ -137,7 +140,7 @@
     var file = uploadFileElement.files[0];
     var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
+    var matches = window.FILE_TYPES.some(function (it) {
       return fileName.endsWith(it);
     });
 
@@ -175,7 +178,6 @@
   };
 
   var validateHashtags = function () {
-    return true;
     hashtagsInput.setCustomValidity('');
     var hashtagsStr = hashtagsInput.value;
     var hashtags = hashtagsStr.split(' ');
@@ -242,39 +244,39 @@
     if (hashtagValidation && commentValidation) {
       //
 
-      var onReload = function (evt) {
-        evt.preventDefault();
-        closeErrorMessage();
+      var onReload = function (evt1) {
+        evt1.preventDefault();
+        errorMsg.close();
         showAddPhotoForm();
       };
 
-      var onCancel = function (evt) {
-        evt.preventDefault();
-        closeErrorMessage();
+      var onCancel = function (evt2) {
+        evt2.preventDefault();
+        errorMsg.close();
         closeAddPhotoForm();
       };
 
-      var onOK = function (evt) {
-        evt.preventDefault();
-        closeSuccessMessage();
+      var onOK = function (evt3) {
+        evt3.preventDefault();
+        successMsg.close();
+
       };
 
       var onError = function (message) {
-        console.error(message);
-        closeUploadMessage();
+        uploadMsg.close();
         closeAddPhotoForm();
-        showErrorMessage(message, ['Попробовать снова', 'Загрузить другой файл'], [onReload, onCancel]);
+        errorMsg = new window.ErrorMessage(message, ['Попробовать снова', 'Загрузить другой файл'], [onReload, onCancel]);
       };
 
       var onSuccess = function (data) {
-        console.log(data);
-        closeUploadMessage();
+        uploadMsg.close();
         closeAddPhotoForm();
-        showSuccessMessage(onOK);
+        successMsg = new window.SuccessMessage(onOK);
+        successMsg.open();
       };
       window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
-      showUploadMessage();
-
+      uploadMsg = new window.UploadMessage();
+      uploadMsg.open();
     }
   };
 
@@ -321,7 +323,7 @@
   };
 
   var onAddPhotoFormESCPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === window.ESC_KEYCODE) {
       if ((!(document.activeElement === hashtagsInput)) && (!(document.activeElement === descriptionInput))) {
         closeAddPhotoForm();
       }

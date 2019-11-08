@@ -27,7 +27,7 @@
       window.getInitialPhotos();
       window.drawPhotos(window.filteredPhotos);
     };
-    window.loadNoForm('https://js.dump.academy/kekstagram/dat a', onSuccess, onError);
+    window.loadNoForm('https://js.dump.academy/kekstagram/data', onSuccess, onError);
   };
 })();
 
@@ -36,21 +36,21 @@
   window.filteredPhotos = [];
 
   window.getInitialPhotos = function () {
-    filteredPhotos = photos.slice();
+    window.filteredPhotos = window.photos.slice();
   };
 
   window.getRandomPhotos = function () {
-    filteredPhotos = [];
-    var RandomUniqueNumbers = getRandomUniqueNumbers(0, photos.length - 1, RANDOM_PHOTOS_COUNT);
-    RandomUniqueNumbers.forEach (function(index) {
-      filteredPhotos.push(photos[index]);
+    window.filteredPhotos = [];
+    var RandomUniqueNumbers = getRandomUniqueNumbers(0, window.photos.length - 1, window.RANDOM_PHOTOS_COUNT);
+    RandomUniqueNumbers.forEach(function (index) {
+      window.filteredPhotos.push(window.photos[index]);
     });
   };
 
   window.getDiscussedPhotos = function () {
-    filteredPhotos = photos.slice();
-    filteredPhotos.sort(function compareNumbers(a, b) {
-      return  b.comments.length - a.comments.length;
+    window.filteredPhotos = window.photos.slice();
+    window.filteredPhotos.sort(function compareNumbers(a, b) {
+      return b.comments.length - a.comments.length;
     });
 
   };
@@ -95,8 +95,7 @@
   };
 
   var onPictureClick = function () {
-    console.log('picture clicked' + this.id);
-    initBigPhoto(this.id);
+    window.initBigPhoto(this.id);
   };
 
   window.clearPhotos = function () {
@@ -107,7 +106,7 @@
   };
 
   window.drawPhotos = function (photosArray) {
-    clearPhotos();
+    window.clearPhotos();
 
     var fragment = new DocumentFragment();
 
@@ -119,7 +118,7 @@
       image.addEventListener('click', onPictureClick);
     });
 
-    showFilter();
+    window.showFilter();
   };
 
 })();
@@ -147,25 +146,27 @@
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
-    lastTimeout = window.setTimeout(function() { console.log('popular button pressed'); }, 300);
-    getInitialPhotos();
-    drawPhotos(filteredPhotos);
+    lastTimeout = window.setTimeout(function () {
+      console.log('popular button pressed');
+    }, 300);
+    window.getInitialPhotos();
+    window.drawPhotos(window.filteredPhotos);
   };
 
   var onRandomButton = function () {
     filterPopularButton.classList.remove('img-filters__button--active');
     filterRandomButton.classList.add('img-filters__button--active');
     filterDiscussedButton.classList.remove('img-filters__button--active');
-    getRandomPhotos();
-    drawPhotos(filteredPhotos);
+    window.getRandomPhotos();
+    window.drawPhotos(window.filteredPhotos);
   };
 
   var onDiscussedButton = function () {
     filterPopularButton.classList.remove('img-filters__button--active');
     filterRandomButton.classList.remove('img-filters__button--active');
     filterDiscussedButton.classList.add('img-filters__button--active');
-    getDiscussedPhotos();
-    drawPhotos(filteredPhotos);
+    window.getDiscussedPhotos();
+    window.drawPhotos(window.filteredPhotos);
   };
 
   window.showFilter = function () {
