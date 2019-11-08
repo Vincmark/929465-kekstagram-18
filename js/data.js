@@ -3,32 +3,31 @@
 // load photos
 (function () {
   window.photos = [];
+  var errorMsg = null;
   window.loadPhotos = function () {
 
     var onReload = function (evt) {
       evt.preventDefault();
-      closeErrorMessage();
-      loadPhotos();
+      errorMsg.close();
+      window.loadPhotos();
     };
 
     var onCancel = function (evt) {
       evt.preventDefault();
-      closeErrorMessage();
+      errorMsg.close();
     };
 
     var onError = function (message) {
-      showErrorMessage(message, ['Попробовать снова', 'ОК'], [onReload, onCancel]);
-      console.error(message);
+      errorMsg = new window.ErrorMessage(message, ['Попробовать снова', 'ОК'], [onReload, onCancel]);
+      errorMsg.open();
     };
 
     var onSuccess = function (data) {
-      console.log(data);
       window.photos = data;
-      getInitialPhotos();
-      drawPhotos(filteredPhotos);
+      window.getInitialPhotos();
+      window.drawPhotos(window.filteredPhotos);
     };
-
-    window.loadNoForm('https://js.dump.academy/kekstagram/data', onSuccess, onError);
+    window.loadNoForm('https://js.dump.academy/kekstagram/dat a', onSuccess, onError);
   };
 })();
 
