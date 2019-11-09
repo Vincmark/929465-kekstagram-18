@@ -4,12 +4,10 @@
   var uploadMsg = null;
   var successMsg = null;
 
-
   // Variables
   var scaleLevel = 100;
   var effectIntensity = 100;
   var currentEffect = 'ORIGINAL';
-
 
   // Elements
   var imageUploadForm = document.querySelector('.img-upload__overlay');
@@ -259,22 +257,25 @@
       var onOK = function (evt3) {
         evt3.preventDefault();
         successMsg.close();
-
       };
 
       var onError = function (message) {
         uploadMsg.close();
         closeAddPhotoForm();
         errorMsg = new window.ErrorMessage(message, ['Попробовать снова', 'Загрузить другой файл'], [onReload, onCancel]);
+        errorMsg.open();
       };
 
-      var onSuccess = function (data) {
+      var onSuccess = function () {
         uploadMsg.close();
         closeAddPhotoForm();
         successMsg = new window.SuccessMessage(onOK);
         successMsg.open();
       };
-      window.load('https://js.dump.academy/kekstagram', imageUploadFormData, onSuccess, onError);
+
+      var saveRequest = new window.NetworkRequest('POST', imageUploadFormData, 'https://js.dump.academy/kekstagram', onSuccess, onError);
+      saveRequest.send();
+
       uploadMsg = new window.UploadMessage();
       uploadMsg.open();
     }
