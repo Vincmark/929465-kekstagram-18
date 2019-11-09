@@ -1,19 +1,20 @@
 'use strict';
 (function () {
+  // dialog forms
   var errorMsg = null;
   var uploadMsg = null;
   var successMsg = null;
 
-  // Variables
+  // variables
   var scaleLevel = 100;
   var effectIntensity = 100;
   var currentEffect = 'ORIGINAL';
 
-  // Elements
+  // elements
   var imageUploadForm = document.querySelector('.img-upload__overlay');
   var uploadFileElement = document.querySelector('#upload-file');
 
-  // form
+  //
   var imageUploadFormData = document.querySelector('.img-upload__form');
 
   //
@@ -100,7 +101,7 @@
   };
 
   var showAddPhotoForm = function () {
-    addPhotoFormInit();
+    // addPhotoFormInit();
     imageUploadForm.classList.remove('hidden');
     minusButton.focus();
   };
@@ -115,9 +116,9 @@
     applyScale();
   };
 
-  var setEffectIntensity = function (intencity) {
-    if (!isNaN(intencity)) {
-      effectIntensity = intencity;
+  var setEffectIntensity = function (intensity) {
+    if (!isNaN(intensity)) {
+      effectIntensity = intensity;
     }
     sliderInput.value = effectIntensity;
     sliderPin.style.left = effectIntensity + '%';
@@ -149,13 +150,11 @@
       });
       reader.readAsDataURL(file);
     }
-
+    addPhotoFormInit();
     showAddPhotoForm();
   };
 
   var onCloseButton = function () {
-    // ESC
-    // Click
     closeAddPhotoForm();
   };
 
@@ -241,7 +240,6 @@
 
     if (hashtagValidation && commentValidation) {
       //
-
       var onReload = function (evt1) {
         evt1.preventDefault();
         errorMsg.close();
