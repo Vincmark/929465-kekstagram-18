@@ -1,7 +1,5 @@
 'use strict';
 
-loadPhotos();
-
-
-
-
+(function () {
+  window.loadPhotos();
+})();
