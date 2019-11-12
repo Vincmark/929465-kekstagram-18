@@ -6,9 +6,9 @@
   var successMsg = null;
 
   // variables
-  var scaleLevel = 100;
-  var effectIntensity = 100;
-  var currentEffect = 'ORIGINAL';
+  var scaleLevel = window.SCALE_LEVEL.MAX;
+  var effectIntensity = window.EFFECT_INTENSITY_LEVEL.MAX;
+  var currentEffect = window.PHOTO_FILTER.ORIGINAL;
 
   // elements
   var imageUploadForm = document.querySelector('.img-upload__overlay');
@@ -52,9 +52,9 @@
     originalEffectButton.checked = true;
     hashtagsInput.value = '';
     descriptionInput.value = '';
-    scaleLevel = 100;
-    effectIntensity = 100;
-    currentEffect = 'ORIGINAL';
+    scaleLevel = window.SCALE_LEVEL.MAX;
+    effectIntensity = window.EFFECT_INTENSITY_LEVEL.MAX;
+    currentEffect = window.PHOTO_FILTER.ORIGINAL;
     setEffectIntensity();
     setScaleLevel();
     hideIntensitySlider();
@@ -66,34 +66,28 @@
   };
 
   var applyScale = function () {
-    imagePreview.style.transform = 'scale(' + String(scaleLevel / 100) + ')';
+    imagePreview.style.transform = 'scale(' + String(scaleLevel / window.SCALE_LEVEL.MAX) + ')';
   };
 
   var applyEffect = function () {
     switch (currentEffect) {
-      case 'ORIGINAL':
+      case window.PHOTO_FILTER.ORIGINAL:
         imagePreview.style.filter = '';
-        // hideIntensitySlider();
         break;
-      case 'CHROME':
-        // showIntensitySlider();
-        imagePreview.style.filter = 'grayscale(' + String(effectIntensity / 100) + ')';
+      case window.PHOTO_FILTER.CHROME:
+        imagePreview.style.filter = 'grayscale(' + String(effectIntensity / window.EFFECT_INTENSITY_LEVEL.MAX) + ')';
         break;
-      case 'SEPIA':
-        // showIntensitySlider();
-        imagePreview.style.filter = 'sepia(' + String(effectIntensity / 100) + ')';
+      case window.PHOTO_FILTER.SEPIA:
+        imagePreview.style.filter = 'sepia(' + String(effectIntensity / window.EFFECT_INTENSITY_LEVEL.MAX) + ')';
         break;
-      case 'MARVIN':
-        // showIntensitySlider();
+      case window.PHOTO_FILTER.MARVIN:
         imagePreview.style.filter = 'invert(' + String(effectIntensity) + '%)';
         break;
-      case 'PHOBOS':
-        // showIntensitySlider();
-        imagePreview.style.filter = 'blur(' + String((effectIntensity / 25) - 1) + 'px)';
+      case window.PHOTO_FILTER.PHOBOS:
+        imagePreview.style.filter = 'blur(' + String((effectIntensity * (window.EFFECT.PHOBOS.MAX - window.EFFECT.PHOBOS.MIN)) / window.EFFECT_INTENSITY_LEVEL.MAX) + 'px)';
         break;
-      case 'HEAT':
-        // showIntensitySlider();
-        imagePreview.style.filter = 'brightness(' + String((effectIntensity * (3 / 100))) + ')';
+      case window.PHOTO_FILTER.HEAT:
+        imagePreview.style.filter = 'brightness(' + String((effectIntensity * (window.EFFECT.HEAT.MAX - window.EFFECT.HEAT.MIN)) / window.EFFECT_INTENSITY_LEVEL.MAX + window.EFFECT.HEAT.MIN) + ')';
         break;
       default:
         break;
@@ -101,7 +95,6 @@
   };
 
   var showAddPhotoForm = function () {
-    // addPhotoFormInit();
     imageUploadForm.classList.remove('hidden');
     minusButton.focus();
   };
@@ -154,21 +147,21 @@
     showAddPhotoForm();
   };
 
-  var onCloseButton = function () {
+  var onCrossCloseButtonClick = function () {
     closeAddPhotoForm();
   };
 
-  var onPlusButton = function () {
-    if (scaleLevel !== 100) {
-      scaleLevel += 25;
+  var onIncreaseButtonClick = function () {
+    if (scaleLevel !== window.SCALE_LEVEL.MAX) {
+      scaleLevel += window.SCALE_LEVEL.STEP;
       setScaleLevel();
       applyScale();
     }
   };
 
-  var onMinusButton = function () {
-    if (scaleLevel !== 25) {
-      scaleLevel -= 25;
+  var onDecreaseButtonClick = function () {
+    if (scaleLevel !== window.SCALE_LEVEL.MIN) {
+      scaleLevel -= window.SCALE_LEVEL.STEP;
       setScaleLevel();
       applyScale();
     }
@@ -187,7 +180,7 @@
       }
     }
 
-    if (hashtagsNoSpaces.length > 5) {
+    if (hashtagsNoSpaces.length > window.HASHTAGS.MAX_COUNT) {
       hashtagsInput.setCustomValidity('Хэштегов должно быть не больше 5');
       return false;
     }
@@ -204,7 +197,7 @@
         return false;
       }
       // length under or equal 20 symbols including #
-      if (hashtagsNoSpaces[i].length > 20) {
+      if (hashtagsNoSpaces[i].length > window.HASHTAGS.MAX_LENGTH) {
         hashtagsInput.setCustomValidity('Длина хэштега не может быть больше 20 символов');
         return false;
       }
@@ -226,14 +219,14 @@
   var validateComment = function () {
     descriptionInput.setCustomValidity('');
     var comment = descriptionInput.value;
-    if (comment.length > 140) {
+    if (comment.length > window.COMMENTS.MAX_LENGTH) {
       descriptionInput.setCustomValidity('Комментарий не должен превышать 140 символов');
       return false;
     }
     return true;
   };
 
-  var onPublishButton = function (evt) {
+  var onPublishButtonClick = function (evt) {
     evt.preventDefault();
     var hashtagValidation = validateHashtags();
     var commentValidation = validateComment();
@@ -271,7 +264,7 @@
         successMsg.open();
       };
 
-      var saveRequest = new window.NetworkRequest('POST', imageUploadFormData, 'https://js.dump.academy/kekstagram', onSuccess, onError);
+      var saveRequest = new window.NetworkRequest(window.REQUEST.METHOD.POST, imageUploadFormData, window.POST_DATA_URL, onSuccess, onError);
       saveRequest.send();
 
       uploadMsg = new window.UploadMessage();
@@ -279,45 +272,45 @@
     }
   };
 
-  var onOriginalEffect = function () {
+  var onOriginalEffectIconClick = function () {
     hideIntensitySlider();
-    setEffectIntensity(100);
-    currentEffect = 'ORIGINAL';
+    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.PHOTO_FILTER.ORIGINAL;
     applyEffect();
   };
 
-  var onCromeEffect = function () {
+  var onCromeEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(100);
-    currentEffect = 'CHROME';
+    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.PHOTO_FILTER.CHROME;
     applyEffect();
   };
 
-  var onSepiaEffect = function () {
+  var onSepiaEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(100);
-    currentEffect = 'SEPIA';
+    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.PHOTO_FILTER.SEPIA;
     applyEffect();
   };
 
-  var onMarvinEffect = function () {
+  var onMarvinEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(100);
-    currentEffect = 'MARVIN';
+    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.PHOTO_FILTER.MARVIN;
     applyEffect();
   };
 
-  var onPhobosEffect = function () {
+  var onPhobosEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(100);
-    currentEffect = 'PHOBOS';
+    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.PHOTO_FILTER.PHOBOS;
     applyEffect();
   };
 
-  var onHeatEffect = function () {
+  var onHeatEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(100);
-    currentEffect = 'HEAT';
+    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.PHOTO_FILTER.HEAT;
     applyEffect();
   };
 
@@ -340,10 +333,10 @@
     var onSliderPinDragMove = function (moveEvt) {
       moveEvt.preventDefault();
       if (moveEvt.clientX <= lineBoundaries.xStart) {
-        effectIntensity = 0;
+        effectIntensity = window.EFFECT_INTENSITY_LEVEL.MIN;
         setEffectIntensity();
       } else if (moveEvt.clientX >= lineBoundaries.xEnd) {
-        effectIntensity = 100;
+        effectIntensity = window.EFFECT_INTENSITY_LEVEL.MAX;
         setEffectIntensity();
       } else {
         var percentPrice = (lineBoundaries.xEnd - lineBoundaries.xStart) / 100;
@@ -365,15 +358,15 @@
 
   // setup listeners
   uploadFileElement.addEventListener('change', onUploadFileChange);
-  closeButton.addEventListener('click', onCloseButton);
-  plusButton.addEventListener('click', onPlusButton);
-  minusButton.addEventListener('click', onMinusButton);
-  publishButton.addEventListener('click', onPublishButton);
-  originalEffectButton.addEventListener('click', onOriginalEffect);
-  cromeEffectButton.addEventListener('click', onCromeEffect);
-  sepiaEffectButton.addEventListener('click', onSepiaEffect);
-  marvinEffectButton.addEventListener('click', onMarvinEffect);
-  phobosEffectButton.addEventListener('click', onPhobosEffect);
-  heatEffectButton.addEventListener('click', onHeatEffect);
+  closeButton.addEventListener('click', onCrossCloseButtonClick);
+  plusButton.addEventListener('click', onIncreaseButtonClick);
+  minusButton.addEventListener('click', onDecreaseButtonClick);
+  publishButton.addEventListener('click', onPublishButtonClick);
+  originalEffectButton.addEventListener('click', onOriginalEffectIconClick);
+  cromeEffectButton.addEventListener('click', onCromeEffectIconClick);
+  sepiaEffectButton.addEventListener('click', onSepiaEffectIconClick);
+  marvinEffectButton.addEventListener('click', onMarvinEffectIconClick);
+  phobosEffectButton.addEventListener('click', onPhobosEffectIconClick);
+  heatEffectButton.addEventListener('click', onHeatEffectIconClick);
   sliderPin.addEventListener('mousedown', onSliderPinDragStart);
 })();

@@ -52,7 +52,6 @@
     window.showFilter();
   };
 
-
   // filter
   var filterBlock = document.querySelector('.img-filters');
   var filterPopularButton = filterBlock.querySelector('#filter-popular');
@@ -66,17 +65,17 @@
     filterRandomButton.classList.remove('img-filters__button--active');
     filterDiscussedButton.classList.remove('img-filters__button--active');
     switch (filterOption) {
-      case window.FILTER_POPULAR:
+      case window.GALLERY_FILTER.POPULAR:
         filterPopularButton.classList.add('img-filters__button--active');
         window.getInitialPhotos();
         window.drawPhotos();
         break;
-      case window.FILTER_RANDOM:
+      case window.GALLERY_FILTER.RANDOM:
         filterRandomButton.classList.add('img-filters__button--active');
         window.getRandomPhotos();
         window.drawPhotos();
         break;
-      case window.FILTER_DISCUSSED:
+      case window.GALLERY_FILTER.DISCUSSED:
         filterDiscussedButton.classList.add('img-filters__button--active');
         window.getDiscussedPhotos();
         window.drawPhotos(window.filteredPhotos);
@@ -85,16 +84,16 @@
     }
   };
 
-  var onPopularButton = function () {
-    filterAntiThrottling(window.FILTER_POPULAR);
+  var onPopularButtonClick = function () {
+    filterAntiThrottling(window.GALLERY_FILTER.POPULAR);
   };
 
-  var onRandomButton = function () {
-    filterAntiThrottling(window.FILTER_RANDOM);
+  var onRandomButtonClick = function () {
+    filterAntiThrottling(window.GALLERY_FILTER.RANDOM);
   };
 
-  var onDiscussedButton = function () {
-    filterAntiThrottling(window.FILTER_DISCUSSED);
+  var onDiscussedButtonClick = function () {
+    filterAntiThrottling(window.GALLERY_FILTER.DISCUSSED);
   };
 
   var filterAntiThrottling = function (filterType) {
@@ -103,22 +102,22 @@
     }
     lastTimeout = window.setTimeout(function () {
       setFilter(filterType);
-    }, window.FILTER_TIMEOUT);
+    }, window.GALLERY_FILTER.TIMEOUT);
   };
 
   window.showFilter = function () {
     if (filterBlock.classList.contains('img-filters--inactive')) {
       filterBlock.classList.remove('img-filters--inactive');
     }
-    filterPopularButton.addEventListener('click', onPopularButton);
-    filterRandomButton.addEventListener('click', onRandomButton);
-    filterDiscussedButton.addEventListener('click', onDiscussedButton);
+    filterPopularButton.addEventListener('click', onPopularButtonClick);
+    filterRandomButton.addEventListener('click', onRandomButtonClick);
+    filterDiscussedButton.addEventListener('click', onDiscussedButtonClick);
   };
 
   window.closeFilter = function () {
-    filterPopularButton.removeEventListener('click', onPopularButton);
-    filterRandomButton.removeEventListener('click', onRandomButton);
-    filterDiscussedButton.removeEventListener('click', onDiscussedButton);
+    filterPopularButton.removeEventListener('click', onPopularButtonClick);
+    filterRandomButton.removeEventListener('click', onRandomButtonClick);
+    filterDiscussedButton.removeEventListener('click', onDiscussedButtonClick);
     if (!filterBlock.classList.contains('img-filters--inactive')) {
       filterBlock.classList.add('img-filters--inactive');
     }

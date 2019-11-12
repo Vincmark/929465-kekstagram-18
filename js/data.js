@@ -7,29 +7,29 @@
 
   // load photos
   window.loadPhotos = function () {
-    var onReload = function (evt) {
+    var onReloadButtonClick = function (evt) {
       evt.preventDefault();
       errorMsg.close();
       window.loadPhotos();
     };
 
-    var onCancel = function (evt) {
+    var onCancelButtonClick = function (evt) {
       evt.preventDefault();
       errorMsg.close();
     };
 
-    var onError = function (message) {
-      errorMsg = new window.ErrorMessage(message, ['Попробовать снова', 'ОК'], [onReload, onCancel]);
+    var onRequestError = function (message) {
+      errorMsg = new window.ErrorMessage(message, ['Попробовать снова', 'ОК'], [onReloadButtonClick, onCancelButtonClick]);
       errorMsg.open();
     };
 
-    var onSuccess = function (data) {
+    var onRequestSuccess = function (data) {
       window.photos = data;
       window.getInitialPhotos();
       window.drawPhotos();
     };
 
-    var request = new window.NetworkRequest('GET', '', 'https://js.dump.academy/kekstagram/data', onSuccess, onError);
+    var request = new window.NetworkRequest(window.REQUEST.METHOD.GET, '', window.GET_DATA_URL, onRequestSuccess, onRequestError);
     request.send();
   };
 

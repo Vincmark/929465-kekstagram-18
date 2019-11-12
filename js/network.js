@@ -2,11 +2,11 @@
 
 (function () {
 
-  window.NetworkRequest = function (method, formData, url, onSuccess, onError) {
+  window.NetworkRequest = function (method, formData, url, onRequestSuccess, onRequestError) {
     this._method = method;
     this._url = url;
-    this._onSuccess = onSuccess;
-    this._onError = onError;
+    this._onRequestSuccess = onRequestSuccess;
+    this._onRequestError = onRequestError;
     this._xhr = null;
     if (formData) {
       this._formData = new FormData(formData);
@@ -16,28 +16,28 @@
   window.NetworkRequest.prototype.send = function () {
     this._xhr = new XMLHttpRequest();
     this._xhr.responseType = 'json';
-    this._xhr.timeout = 10000; // 10s
+    this._xhr.timeout = window.REQUEST.TIMEOUT;
     var outerThis = this;
 
-    this.onLoad = function () {
-      if (outerThis._xhr.status === 200) {
-        outerThis._onSuccess(outerThis._xhr.response);
+    this.onRequestLoad = function () {
+      if (outerThis._xhr.status === window.REQUEST.STATUS_OK) {
+        outerThis._onRequestSuccess(outerThis._xhr.response);
       } else {
-        outerThis._onError('Cтатус ответа: ' + outerThis._xhr.status + ' ' + outerThis._xhr.statusText);
+        outerThis._onRequestError('Статус ответа: ' + outerThis._xhr.status + ' ' + outerThis._xhr.statusText);
       }
     };
 
-    this.onError = function () {
-      outerThis._onError('Произошла ошибка соединения');
+    this.onRequestError = function () {
+      outerThis._onRequestError('Произошла ошибка соединения');
     };
 
-    this.onTimeout = function () {
-      outerThis._onError('Запрос не успел выполниться за ' + outerThis._xhr.timeout + 'мс');
+    this.onRequestTimeout = function () {
+      outerThis._onRequestError('Запрос не успел выполниться за ' + outerThis._xhr.timeout + 'мс');
     };
 
-    this._xhr.addEventListener('load', this.onLoad);
-    this._xhr.addEventListener('error', this.onError);
-    this._xhr.addEventListener('timeout', this.onTimeout);
+    this._xhr.addEventListener('load', this.onRequestLoad);
+    this._xhr.addEventListener('error', this.onRequestError);
+    this._xhr.addEventListener('timeout', this.onRequestTimeout);
 
     this._xhr.open(this._method, this._url);
 

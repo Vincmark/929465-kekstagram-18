@@ -5,10 +5,63 @@
   window.RANDOM_PHOTOS_COUNT = 10;
   window.LOAD_COMMENTS_PER_ITERATION = 5;
   window.FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  window.FILTER_POPULAR = 1;
-  window.FILTER_RANDOM = 2;
-  window.FILTER_DISCUSSED = 3;
-  window.FILTER_TIMEOUT = 200;
+  window.GALLERY_FILTER = {
+    POPULAR: 'popular',
+    RANDOM: 'random',
+    DISCUSSED: 'discussed',
+    TIMEOUT: 200,
+  };
+
+  window.PHOTO_FILTER = {
+    ORIGINAL: 'original',
+    CHROME: 'chrome',
+    SEPIA: 'sepia',
+    MARVIN: 'marvin',
+    PHOBOS: 'phobos',
+    HEAT: 'heat',
+  };
+
+  window.EFFECT = {
+    PHOBOS: {
+      MIN: 0,
+      MAX: 3,
+    },
+    HEAT: {
+      MIN: 1,
+      MAX: 3,
+    }
+  };
+
+  window.REQUEST = {
+    TIMEOUT: 10000,
+    STATUS_OK: 200,
+    METHOD: {
+      GET: 'GET',
+      POST: 'POST',
+    }
+  };
+
+  window.HASHTAGS = {
+    MAX_LENGTH: 20,
+    MAX_COUNT: 5,
+  };
+
+  window.COMMENTS = {
+    MAX_LENGTH: 140,
+  };
+
+  window.GET_DATA_URL = 'https://js.dump.academy/kekstagram/data';
+  window.POST_DATA_URL = 'https://js.dump.academy/kekstagram';
+
+  window.SCALE_LEVEL = {
+    MIN: 25,
+    MAX: 100,
+    STEP: 25,
+  };
+  window.EFFECT_INTENSITY_LEVEL = {
+    MIN: 0,
+    MAX: 100,
+  };
 
   window.ErrorMessage = function (errorMessage, buttonTitles, buttonCallbacks) {
     this._errorMessage = errorMessage;

@@ -91,7 +91,7 @@
     commentsCounterElement.innerHTML = openedCommentsCount + ' из <span class="comments-count">' + commentsCount + '</span> комментариев';
   };
 
-  var onShowMoreCommentsButton = function (evt) {
+  var onShowMoreCommentsButtonClick = function (evt) {
     evt.preventDefault();
     showComments();
   };
@@ -101,13 +101,13 @@
     showBigPhoto();
     setupBigPicture();
     showComments();
-    closeBigPhotoButton.addEventListener('click', onCloseBigPhotoButton);
+    closeBigPhotoButton.addEventListener('click', onCloseBigPhotoButtonClick);
     document.addEventListener('keydown', onBigPhotoFormESCPress);
-    showMoreCommentsButton.addEventListener('click', onShowMoreCommentsButton);
+    showMoreCommentsButton.addEventListener('click', onShowMoreCommentsButtonClick);
   };
 
   var deinitBigPhoto = function () {
-    closeBigPhotoButton.removeEventListener('click', onCloseBigPhotoButton);
+    closeBigPhotoButton.removeEventListener('click', onCloseBigPhotoButtonClick);
     document.removeEventListener('keydown', onBigPhotoFormESCPress);
     closeBigPhoto();
   };
@@ -115,7 +115,7 @@
   var closeBigPhotoButton = document.querySelector('#picture-cancel');
   var showMoreCommentsButton = document.querySelector('.comments-loader');
 
-  var onCloseBigPhotoButton = function () {
+  var onCloseBigPhotoButtonClick = function () {
     deinitBigPhoto();
   };
 
