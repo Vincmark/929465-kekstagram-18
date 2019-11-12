@@ -1,77 +1,92 @@
 'use strict';
 
 (function () {
-  window.ESC_KEYCODE = 27;
-  window.RANDOM_PHOTOS_COUNT = 10;
-  window.LOAD_COMMENTS_PER_ITERATION = 5;
-  window.FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  window.GALLERY_FILTER = {
-    POPULAR: 'popular',
-    RANDOM: 'random',
-    DISCUSSED: 'discussed',
-    TIMEOUT: 200,
-  };
 
-  window.PHOTO_FILTER = {
-    ORIGINAL: 'original',
-    CHROME: 'chrome',
-    SEPIA: 'sepia',
-    MARVIN: 'marvin',
-    PHOBOS: 'phobos',
-    HEAT: 'heat',
-  };
+  window.common = {
+    ESC_KEYCODE: 27,
+    RANDOM_PHOTOS_COUNT: 10,
+    LOAD_COMMENTS_PER_ITERATION: 5,
+    FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
 
-  window.EFFECT = {
-    PHOBOS: {
-      MIN: 0,
-      MAX: 3,
+    GALLERY_FILTER: {
+      POPULAR: 'popular',
+      RANDOM: 'random',
+      DISCUSSED: 'discussed',
+      TIMEOUT: 200,
     },
-    HEAT: {
-      MIN: 1,
-      MAX: 3,
-    }
+
+    PHOTO_FILTER: {
+      ORIGINAL: 'original',
+      CHROME: 'chrome',
+      SEPIA: 'sepia',
+      MARVIN: 'marvin',
+      PHOBOS: 'phobos',
+      HEAT: 'heat',
+    },
+
+    EFFECT: {
+      PHOBOS: {
+        MIN: 0,
+        MAX: 3,
+      },
+      HEAT: {
+        MIN: 1,
+        MAX: 3,
+      }
+    },
+
+    REQUEST: {
+      TIMEOUT: 10000,
+      STATUS_OK: 200,
+      METHOD: {
+        GET: 'GET',
+        POST: 'POST',
+      }
+    },
+
+    HASHTAGS: {
+      MAX_LENGTH: 20,
+      MAX_COUNT: 5,
+    },
+
+    COMMENTS: {
+      MAX_LENGTH: 140,
+    },
+
+    GET_DATA_URL: 'https://js.dump.academy/kekstagram/data',
+    POST_DATA_URL: 'https://js.dump.academy/kekstagram',
+
+    SCALE_LEVEL: {
+      MIN: 25,
+      MAX: 100,
+      STEP: 25,
+    },
+
+    EFFECT_INTENSITY_LEVEL: {
+      MIN: 0,
+      MAX: 100,
+    },
+
+    ErrorMessage: function (errorMessage, buttonTitles, buttonCallbacks) {
+      this._errorMessage = errorMessage;
+      this._buttonTitles = buttonTitles;
+      this._buttonCallbacks = buttonCallbacks;
+      this._formElement = null;
+      this._formButtons = null;
+    },
+
+    UploadMessage: function () {
+      this._formElement = null;
+    },
+
+    SuccessMessage: function (buttonCallback) {
+      this._buttonCallback = buttonCallback;
+      this._formButton = null;
+      this._formElement = null;
+    },
   };
 
-  window.REQUEST = {
-    TIMEOUT: 10000,
-    STATUS_OK: 200,
-    METHOD: {
-      GET: 'GET',
-      POST: 'POST',
-    }
-  };
-
-  window.HASHTAGS = {
-    MAX_LENGTH: 20,
-    MAX_COUNT: 5,
-  };
-
-  window.COMMENTS = {
-    MAX_LENGTH: 140,
-  };
-
-  window.GET_DATA_URL = 'https://js.dump.academy/kekstagram/data';
-  window.POST_DATA_URL = 'https://js.dump.academy/kekstagram';
-
-  window.SCALE_LEVEL = {
-    MIN: 25,
-    MAX: 100,
-    STEP: 25,
-  };
-  window.EFFECT_INTENSITY_LEVEL = {
-    MIN: 0,
-    MAX: 100,
-  };
-
-  window.ErrorMessage = function (errorMessage, buttonTitles, buttonCallbacks) {
-    this._errorMessage = errorMessage;
-    this._buttonTitles = buttonTitles;
-    this._buttonCallbacks = buttonCallbacks;
-    this._formElement = null;
-    this._formButtons = null;
-  };
-
-  window.ErrorMessage.prototype.open = function () {
+  window.common.ErrorMessage.prototype.open = function () {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var errorMessage = errorTemplate.cloneNode(true);
     document.body.querySelector('main').appendChild(errorMessage);
@@ -86,34 +101,24 @@
     this._formButtons[1].addEventListener('click', this._buttonCallbacks[1]);
   };
 
-  window.ErrorMessage.prototype.close = function () {
+  window.common.ErrorMessage.prototype.close = function () {
     this._formButtons[0].removeEventListener('click', this._buttonCallbacks[0]);
     this._formButtons[1].removeEventListener('click', this._buttonCallbacks[1]);
     document.body.querySelector('main').removeChild(this._formElement);
   };
 
-  window.UploadMessage = function () {
-    this._formElement = null;
-  };
-
-  window.UploadMessage.prototype.open = function () {
+  window.common.UploadMessage.prototype.open = function () {
     var uploadTemplate = document.querySelector('#messages').content.querySelector('div');
     var uploadMessage = uploadTemplate.cloneNode(true);
     document.body.querySelector('main').appendChild(uploadMessage);
     this._formElement = document.querySelector('.img-upload__message');
   };
 
-  window.UploadMessage.prototype.close = function () {
+  window.common.UploadMessage.prototype.close = function () {
     document.body.querySelector('main').removeChild(this._formElement);
   };
 
-  window.SuccessMessage = function (buttonCallback) {
-    this._buttonCallback = buttonCallback;
-    this._formButton = null;
-    this._formElement = null;
-  };
-
-  window.SuccessMessage.prototype.open = function () {
+  window.common.SuccessMessage.prototype.open = function () {
     var successTemplate = document.querySelector('#success').content.querySelector('.success');
     var successMessage = successTemplate.cloneNode(true);
     document.body.querySelector('main').appendChild(successMessage);
@@ -122,8 +127,9 @@
     this._formButton.addEventListener('click', this._buttonCallback);
   };
 
-  window.SuccessMessage.prototype.close = function () {
+  window.common.SuccessMessage.prototype.close = function () {
     this._formButton.removeEventListener('click', this._buttonCallback);
     document.body.querySelector('main').removeChild(this._formElement);
   };
+
 })();

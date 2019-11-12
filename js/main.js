@@ -1,6 +1,6 @@
 'use strict';
 
 (function () {
-  window.loadPhotos();
+  window.data.loadPhotos();
 })();
 

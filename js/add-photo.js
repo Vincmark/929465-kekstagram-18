@@ -172,11 +172,10 @@
     var hashtagsStr = hashtagsInput.value;
     var hashtags = hashtagsStr.split(' ');
     var hashtagsNoSpaces = [];
-    var i = 0;
-    var j = 0;
-    for (i = 0; i < hashtags.length; i++) {
-      if (hashtags[i] !== '') {
-        hashtagsNoSpaces.push(hashtags[i].toLowerCase());
+
+    for (var m = 0; m < hashtags.length; m++) {
+      if (hashtags[m] !== '') {
+        hashtagsNoSpaces.push(hashtags[m].toLowerCase());
       }
     }
 
@@ -185,9 +184,9 @@
       return false;
     }
     // check for #
-    for (i = 0; i < hashtagsNoSpaces.length; i++) {
+    for (var k = 0; k < hashtagsNoSpaces.length; k++) {
       // starts from #
-      if (hashtagsNoSpaces[i][0] !== '#') {
+      if (hashtagsNoSpaces[k][0] !== '#') {
         hashtagsInput.setCustomValidity('Хэштеги должны начинаться с символа #');
         return false;
       }
@@ -203,8 +202,8 @@
       }
     }
 
-    for (i = 0; i < hashtagsNoSpaces.length; i++) {
-      for (j = i; j < hashtagsNoSpaces.length; j++) {
+    for (var i = 0; i < hashtagsNoSpaces.length; i++) {
+      for (var j = i; j < hashtagsNoSpaces.length; j++) {
         if (hashtagsNoSpaces[i] === hashtagsNoSpaces[j]) {
           if (i !== j) {
             hashtagsInput.setCustomValidity('Хэштеги не должны повторяться');
