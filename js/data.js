@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.data = (function () {
   var errorMsg = null;
   var photos = [];
   var getRandomUniqueNumbers = function (min, max, count) {
@@ -14,7 +14,7 @@
     return numArray;
   };
 
-  window.data = {
+  return {
     filteredPhotos: [],
     loadPhotos: function () {
       var outerThis = this;
@@ -30,17 +30,17 @@
       };
 
       var onRequestError = function (message) {
-        errorMsg = new window.ErrorMessage(message, ['Попробовать снова', 'ОК'], [onReloadButtonClick, onCancelButtonClick]);
+        errorMsg = new window.common.ErrorMessage(message, ['Попробовать снова', 'ОК'], [onReloadButtonClick, onCancelButtonClick]);
         errorMsg.open();
       };
 
       var onRequestSuccess = function (data) {
         photos = data;
         outerThis.getInitialPhotos();
-        window.drawPhotos();
+        window.gallery.drawPhotos();
       };
 
-      var request = new window.NetworkRequest(window.REQUEST.METHOD.GET, '', window.GET_DATA_URL, onRequestSuccess, onRequestError);
+      var request = new window.network.NetworkRequest(window.common.REQUEST.METHOD.GET, '', window.common.GET_DATA_URL, onRequestSuccess, onRequestError);
       request.send();
     },
 
@@ -50,7 +50,7 @@
 
     getRandomPhotos: function () {
       this.filteredPhotos = [];
-      var RandomUniqueNumbers = getRandomUniqueNumbers(0, photos.length - 1, window.RANDOM_PHOTOS_COUNT);
+      var RandomUniqueNumbers = getRandomUniqueNumbers(0, photos.length - 1, window.common.RANDOM_PHOTOS_COUNT);
       var outerThis = this;
       RandomUniqueNumbers.forEach(function (index) {
         outerThis.filteredPhotos.push(photos[index]);

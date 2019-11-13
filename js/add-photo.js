@@ -6,9 +6,9 @@
   var successMsg = null;
 
   // variables
-  var scaleLevel = window.SCALE_LEVEL.MAX;
-  var effectIntensity = window.EFFECT_INTENSITY_LEVEL.MAX;
-  var currentEffect = window.PHOTO_FILTER.ORIGINAL;
+  var scaleLevel = window.common.SCALE_LEVEL.MAX;
+  var effectIntensity = window.common.EFFECT_INTENSITY_LEVEL.MAX;
+  var currentEffect = window.common.PHOTO_FILTER.ORIGINAL;
 
   // elements
   var imageUploadForm = document.querySelector('.img-upload__overlay');
@@ -52,9 +52,9 @@
     originalEffectButton.checked = true;
     hashtagsInput.value = '';
     descriptionInput.value = '';
-    scaleLevel = window.SCALE_LEVEL.MAX;
-    effectIntensity = window.EFFECT_INTENSITY_LEVEL.MAX;
-    currentEffect = window.PHOTO_FILTER.ORIGINAL;
+    scaleLevel = window.common.SCALE_LEVEL.MAX;
+    effectIntensity = window.common.EFFECT_INTENSITY_LEVEL.MAX;
+    currentEffect = window.common.PHOTO_FILTER.ORIGINAL;
     setEffectIntensity();
     setScaleLevel();
     hideIntensitySlider();
@@ -66,28 +66,28 @@
   };
 
   var applyScale = function () {
-    imagePreview.style.transform = 'scale(' + String(scaleLevel / window.SCALE_LEVEL.MAX) + ')';
+    imagePreview.style.transform = 'scale(' + String(scaleLevel / window.common.SCALE_LEVEL.MAX) + ')';
   };
 
   var applyEffect = function () {
     switch (currentEffect) {
-      case window.PHOTO_FILTER.ORIGINAL:
+      case window.common.PHOTO_FILTER.ORIGINAL:
         imagePreview.style.filter = '';
         break;
-      case window.PHOTO_FILTER.CHROME:
-        imagePreview.style.filter = 'grayscale(' + String(effectIntensity / window.EFFECT_INTENSITY_LEVEL.MAX) + ')';
+      case window.common.PHOTO_FILTER.CHROME:
+        imagePreview.style.filter = 'grayscale(' + String(effectIntensity / window.common.EFFECT_INTENSITY_LEVEL.MAX) + ')';
         break;
-      case window.PHOTO_FILTER.SEPIA:
-        imagePreview.style.filter = 'sepia(' + String(effectIntensity / window.EFFECT_INTENSITY_LEVEL.MAX) + ')';
+      case window.common.PHOTO_FILTER.SEPIA:
+        imagePreview.style.filter = 'sepia(' + String(effectIntensity / window.common.EFFECT_INTENSITY_LEVEL.MAX) + ')';
         break;
-      case window.PHOTO_FILTER.MARVIN:
+      case window.common.PHOTO_FILTER.MARVIN:
         imagePreview.style.filter = 'invert(' + String(effectIntensity) + '%)';
         break;
-      case window.PHOTO_FILTER.PHOBOS:
-        imagePreview.style.filter = 'blur(' + String((effectIntensity * (window.EFFECT.PHOBOS.MAX - window.EFFECT.PHOBOS.MIN)) / window.EFFECT_INTENSITY_LEVEL.MAX) + 'px)';
+      case window.common.PHOTO_FILTER.PHOBOS:
+        imagePreview.style.filter = 'blur(' + String((effectIntensity * (window.common.EFFECT.PHOBOS.MAX - window.common.EFFECT.PHOBOS.MIN)) / window.common.EFFECT_INTENSITY_LEVEL.MAX) + 'px)';
         break;
-      case window.PHOTO_FILTER.HEAT:
-        imagePreview.style.filter = 'brightness(' + String((effectIntensity * (window.EFFECT.HEAT.MAX - window.EFFECT.HEAT.MIN)) / window.EFFECT_INTENSITY_LEVEL.MAX + window.EFFECT.HEAT.MIN) + ')';
+      case window.common.PHOTO_FILTER.HEAT:
+        imagePreview.style.filter = 'brightness(' + String((effectIntensity * (window.common.EFFECT.HEAT.MAX - window.common.EFFECT.HEAT.MIN)) / window.common.EFFECT_INTENSITY_LEVEL.MAX + window.common.EFFECT.HEAT.MIN) + ')';
         break;
       default:
         break;
@@ -132,7 +132,7 @@
     var file = uploadFileElement.files[0];
     var fileName = file.name.toLowerCase();
 
-    var matches = window.FILE_TYPES.some(function (it) {
+    var matches = window.common.FILE_TYPES.some(function (it) {
       return fileName.endsWith(it);
     });
 
@@ -152,16 +152,16 @@
   };
 
   var onIncreaseButtonClick = function () {
-    if (scaleLevel !== window.SCALE_LEVEL.MAX) {
-      scaleLevel += window.SCALE_LEVEL.STEP;
+    if (scaleLevel !== window.common.SCALE_LEVEL.MAX) {
+      scaleLevel += window.common.SCALE_LEVEL.STEP;
       setScaleLevel();
       applyScale();
     }
   };
 
   var onDecreaseButtonClick = function () {
-    if (scaleLevel !== window.SCALE_LEVEL.MIN) {
-      scaleLevel -= window.SCALE_LEVEL.STEP;
+    if (scaleLevel !== window.common.SCALE_LEVEL.MIN) {
+      scaleLevel -= window.common.SCALE_LEVEL.STEP;
       setScaleLevel();
       applyScale();
     }
@@ -179,7 +179,7 @@
       }
     }
 
-    if (hashtagsNoSpaces.length > window.HASHTAGS.MAX_COUNT) {
+    if (hashtagsNoSpaces.length > window.common.HASHTAGS.MAX_COUNT) {
       hashtagsInput.setCustomValidity('Хэштегов должно быть не больше 5');
       return false;
     }
@@ -196,7 +196,7 @@
         return false;
       }
       // length under or equal 20 symbols including #
-      if (hashtagsNoSpaces[i].length > window.HASHTAGS.MAX_LENGTH) {
+      if (hashtagsNoSpaces[i].length > window.common.HASHTAGS.MAX_LENGTH) {
         hashtagsInput.setCustomValidity('Длина хэштега не может быть больше 20 символов');
         return false;
       }
@@ -218,7 +218,7 @@
   var validateComment = function () {
     descriptionInput.setCustomValidity('');
     var comment = descriptionInput.value;
-    if (comment.length > window.COMMENTS.MAX_LENGTH) {
+    if (comment.length > window.common.COMMENTS.MAX_LENGTH) {
       descriptionInput.setCustomValidity('Комментарий не должен превышать 140 символов');
       return false;
     }
@@ -252,69 +252,69 @@
       var onError = function (message) {
         uploadMsg.close();
         closeAddPhotoForm();
-        errorMsg = new window.ErrorMessage(message, ['Попробовать снова', 'Загрузить другой файл'], [onReload, onCancel]);
+        errorMsg = new window.common.ErrorMessage(message, ['Попробовать снова', 'Загрузить другой файл'], [onReload, onCancel]);
         errorMsg.open();
       };
 
       var onSuccess = function () {
         uploadMsg.close();
         closeAddPhotoForm();
-        successMsg = new window.SuccessMessage(onOK);
+        successMsg = new window.common.SuccessMessage(onOK);
         successMsg.open();
       };
 
-      var saveRequest = new window.NetworkRequest(window.REQUEST.METHOD.POST, imageUploadFormData, window.POST_DATA_URL, onSuccess, onError);
+      var saveRequest = new window.network.NetworkRequest(window.common.REQUEST.METHOD.POST, imageUploadFormData, window.common.POST_DATA_URL, onSuccess, onError);
       saveRequest.send();
 
-      uploadMsg = new window.UploadMessage();
+      uploadMsg = new window.common.UploadMessage();
       uploadMsg.open();
     }
   };
 
   var onOriginalEffectIconClick = function () {
     hideIntensitySlider();
-    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
-    currentEffect = window.PHOTO_FILTER.ORIGINAL;
+    setEffectIntensity(window.common.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.common.PHOTO_FILTER.ORIGINAL;
     applyEffect();
   };
 
   var onCromeEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
-    currentEffect = window.PHOTO_FILTER.CHROME;
+    setEffectIntensity(window.common.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.common.PHOTO_FILTER.CHROME;
     applyEffect();
   };
 
   var onSepiaEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
-    currentEffect = window.PHOTO_FILTER.SEPIA;
+    setEffectIntensity(window.common.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.common.PHOTO_FILTER.SEPIA;
     applyEffect();
   };
 
   var onMarvinEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
-    currentEffect = window.PHOTO_FILTER.MARVIN;
+    setEffectIntensity(window.common.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.common.PHOTO_FILTER.MARVIN;
     applyEffect();
   };
 
   var onPhobosEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
-    currentEffect = window.PHOTO_FILTER.PHOBOS;
+    setEffectIntensity(window.common.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.common.PHOTO_FILTER.PHOBOS;
     applyEffect();
   };
 
   var onHeatEffectIconClick = function () {
     showIntensitySlider();
-    setEffectIntensity(window.EFFECT_INTENSITY_LEVEL.MAX);
-    currentEffect = window.PHOTO_FILTER.HEAT;
+    setEffectIntensity(window.common.EFFECT_INTENSITY_LEVEL.MAX);
+    currentEffect = window.common.PHOTO_FILTER.HEAT;
     applyEffect();
   };
 
   var onAddPhotoFormESCPress = function (evt) {
-    if (evt.keyCode === window.ESC_KEYCODE) {
+    if (evt.keyCode === window.common.ESC_KEYCODE) {
       if ((!(document.activeElement === hashtagsInput)) && (!(document.activeElement === descriptionInput))) {
         closeAddPhotoForm();
       }
@@ -332,10 +332,10 @@
     var onSliderPinDragMove = function (moveEvt) {
       moveEvt.preventDefault();
       if (moveEvt.clientX <= lineBoundaries.xStart) {
-        effectIntensity = window.EFFECT_INTENSITY_LEVEL.MIN;
+        effectIntensity = window.common.EFFECT_INTENSITY_LEVEL.MIN;
         setEffectIntensity();
       } else if (moveEvt.clientX >= lineBoundaries.xEnd) {
-        effectIntensity = window.EFFECT_INTENSITY_LEVEL.MAX;
+        effectIntensity = window.common.EFFECT_INTENSITY_LEVEL.MAX;
         setEffectIntensity();
       } else {
         var percentPrice = (lineBoundaries.xEnd - lineBoundaries.xStart) / 100;

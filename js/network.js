@@ -2,25 +2,27 @@
 
 (function () {
 
-  window.NetworkRequest = function (method, formData, url, onRequestSuccess, onRequestError) {
-    this._method = method;
-    this._url = url;
-    this._onRequestSuccess = onRequestSuccess;
-    this._onRequestError = onRequestError;
-    this._xhr = null;
-    if (formData) {
-      this._formData = new FormData(formData);
-    }
+  window.network = {
+    NetworkRequest: function (method, formData, url, onRequestSuccess, onRequestError) {
+      this._method = method;
+      this._url = url;
+      this._onRequestSuccess = onRequestSuccess;
+      this._onRequestError = onRequestError;
+      this._xhr = null;
+      if (formData) {
+        this._formData = new FormData(formData);
+      }
+    },
   };
 
-  window.NetworkRequest.prototype.send = function () {
+  window.network.NetworkRequest.prototype.send = function () {
     this._xhr = new XMLHttpRequest();
     this._xhr.responseType = 'json';
-    this._xhr.timeout = window.REQUEST.TIMEOUT;
+    this._xhr.timeout = window.common.REQUEST.TIMEOUT;
     var outerThis = this;
 
     this.onRequestLoad = function () {
-      if (outerThis._xhr.status === window.REQUEST.STATUS_OK) {
+      if (outerThis._xhr.status === window.common.REQUEST.STATUS_OK) {
         outerThis._onRequestSuccess(outerThis._xhr.response);
       } else {
         outerThis._onRequestError('Статус ответа: ' + outerThis._xhr.status + ' ' + outerThis._xhr.statusText);

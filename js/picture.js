@@ -35,15 +35,15 @@
   var setupBigPicture = function () {
     var pictureElement = document.querySelector('.big-picture');
     var imageElement = pictureElement.querySelector('.big-picture__img').children[0];
-    imageElement.src = window.filteredPhotos[currentBigPhoto]['url'];
+    imageElement.src = window.data.filteredPhotos[currentBigPhoto]['url'];
 
     //
     var likesCountElement = pictureElement.querySelector('.likes-count');
-    likesCountElement.textContent = window.filteredPhotos[currentBigPhoto].likes;
+    likesCountElement.textContent = window.data.filteredPhotos[currentBigPhoto].likes;
 
     //
     var photoDescriptionElement = pictureElement.querySelector('.social__caption');
-    photoDescriptionElement.textContent = window.filteredPhotos[currentBigPhoto].description;
+    photoDescriptionElement.textContent = window.data.filteredPhotos[currentBigPhoto].description;
 
     //
     var commentsContainerElement = document.querySelector('.social__comments');
@@ -56,10 +56,10 @@
   var showComments = function () {
     var commentsContainerElement = document.querySelector('.social__comments');
     var openedCommentsCount = commentsContainerElement.querySelectorAll('.social__comment').length;
-    var commentsCount = window.filteredPhotos[currentBigPhoto].comments.length;
+    var commentsCount = window.data.filteredPhotos[currentBigPhoto].comments.length;
 
     var startIndex = openedCommentsCount;
-    var endIndex = startIndex + window.LOAD_COMMENTS_PER_ITERATION - 1;
+    var endIndex = startIndex + window.common.LOAD_COMMENTS_PER_ITERATION - 1;
     if ((commentsCount - 1) <= endIndex) {
       endIndex = commentsCount - 1;
       hideInterfaceElement('.comments-loader');
@@ -75,9 +75,9 @@
       var commentAvatarElement = commentElement.querySelector('.social__picture');
       var commentTextElement = commentElement.querySelector('.social__text');
 
-      commentAvatarElement.src = window.filteredPhotos[currentBigPhoto].comments[i]['avatar'];
-      commentAvatarElement.alt = window.filteredPhotos[currentBigPhoto].comments[i].name;
-      commentTextElement.textContent = window.filteredPhotos[currentBigPhoto].comments[i].message;
+      commentAvatarElement.src = window.data.filteredPhotos[currentBigPhoto].comments[i]['avatar'];
+      commentAvatarElement.alt = window.data.filteredPhotos[currentBigPhoto].comments[i].name;
+      commentTextElement.textContent = window.data.filteredPhotos[currentBigPhoto].comments[i].message;
       fragment.appendChild(commentElement);
     }
     commentsContainerElement.appendChild(fragment);
@@ -86,7 +86,7 @@
 
   var setCommentCounter = function () {
     var commentsCounterElement = document.querySelector('.social__comment-count');
-    var commentsCount = window.filteredPhotos[currentBigPhoto].comments.length;
+    var commentsCount = window.data.filteredPhotos[currentBigPhoto].comments.length;
     var openedCommentsCount = document.querySelectorAll('.social__comment').length;
     commentsCounterElement.innerHTML = openedCommentsCount + ' из <span class="comments-count">' + commentsCount + '</span> комментариев';
   };
@@ -94,16 +94,6 @@
   var onShowMoreCommentsButtonClick = function (evt) {
     evt.preventDefault();
     showComments();
-  };
-
-  window.initBigPhoto = function (photoId) {
-    currentBigPhoto = photoId;
-    showBigPhoto();
-    setupBigPicture();
-    showComments();
-    closeBigPhotoButton.addEventListener('click', onCloseBigPhotoButtonClick);
-    document.addEventListener('keydown', onBigPhotoFormESCPress);
-    showMoreCommentsButton.addEventListener('click', onShowMoreCommentsButtonClick);
   };
 
   var deinitBigPhoto = function () {
@@ -120,9 +110,19 @@
   };
 
   var onBigPhotoFormESCPress = function (evt) {
-    if (evt.keyCode === window.ESC_KEYCODE) {
+    if (evt.keyCode === window.common.ESC_KEYCODE) {
       deinitBigPhoto();
     }
   };
-
+  window.picture = {
+    initBigPhoto: function (photoId) {
+      currentBigPhoto = photoId;
+      showBigPhoto();
+      setupBigPicture();
+      showComments();
+      closeBigPhotoButton.addEventListener('click', onCloseBigPhotoButtonClick);
+      document.addEventListener('keydown', onBigPhotoFormESCPress);
+      showMoreCommentsButton.addEventListener('click', onShowMoreCommentsButtonClick);
+    },
+  };
 })();
