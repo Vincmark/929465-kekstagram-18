@@ -88,7 +88,15 @@
     var commentsCounterElement = document.querySelector('.social__comment-count');
     var commentsCount = window.data.filteredPhotos[currentBigPhoto].comments.length;
     var openedCommentsCount = document.querySelectorAll('.social__comment').length;
-    commentsCounterElement.innerHTML = openedCommentsCount + ' из <span class="comments-count">' + commentsCount + '</span> комментариев';
+    var commentsCountTextElementBefore = document.createTextNode(openedCommentsCount.toString() + ' из ');
+    var commentsCountSpanElement = document.createElement('span');
+    var commentsCountTextElementAfter = document.createTextNode(' комментариев');
+    commentsCountSpanElement.textContent = commentsCount.toString();
+    commentsCountSpanElement.classList.add('comments-count')
+    commentsCounterElement.textContent = '';
+    commentsCounterElement.appendChild(commentsCountTextElementBefore);
+    commentsCounterElement.appendChild(commentsCountSpanElement);
+    commentsCounterElement.appendChild(commentsCountTextElementAfter);
   };
 
   var onShowMoreCommentsButtonClick = function (evt) {

@@ -263,11 +263,11 @@
         successMsg.open();
       };
 
-      var saveRequest = new window.network.NetworkRequest(window.common.REQUEST.METHOD.POST, imageUploadFormData, window.common.POST_DATA_URL, onSuccess, onError);
-      saveRequest.send();
+      // var saveRequest = new window.network.NetworkRequest(window.common.REQUEST.METHOD.POST, imageUploadFormData, window.common.POST_DATA_URL, onSuccess, onError);
+      // saveRequest.send();
 
-      uploadMsg = new window.common.UploadMessage();
-      uploadMsg.open();
+      // uploadMsg = new window.common.UploadMessage();
+      // uploadMsg.open();
     }
   };
 

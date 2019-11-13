@@ -8,7 +8,7 @@
       this._url = url;
       this._onRequestSuccess = onRequestSuccess;
       this._onRequestError = onRequestError;
-      this._xhr = null;
+      this. _xhr = null;
       if (formData) {
         this._formData = new FormData(formData);
       }
