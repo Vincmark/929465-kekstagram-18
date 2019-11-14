@@ -92,7 +92,7 @@
     var commentsCountSpanElement = document.createElement('span');
     var commentsCountTextElementAfter = document.createTextNode(' комментариев');
     commentsCountSpanElement.textContent = commentsCount.toString();
-    commentsCountSpanElement.classList.add('comments-count')
+    commentsCountSpanElement.classList.add('comments-count');
     commentsCounterElement.textContent = '';
     commentsCounterElement.appendChild(commentsCountTextElementBefore);
     commentsCounterElement.appendChild(commentsCountSpanElement);
