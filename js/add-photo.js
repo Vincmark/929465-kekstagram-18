@@ -231,54 +231,6 @@
     return this._errorString;
   };
 
-  // var validateHashtags = function () {
-  //   hashtagsInput.setCustomValidity('');
-  //   var hashtagsStr = hashtagsInput.value;
-  //   var hashtags = hashtagsStr.split(' ');
-  //   var hashtagsNoSpaces = [];
-  //
-  //   for (var m = 0; m < hashtags.length; m++) {
-  //     if (hashtags[m] !== '') {
-  //       hashtagsNoSpaces.push(hashtags[m].toLowerCase());
-  //     }
-  //   }
-  //
-  //   if (hashtagsNoSpaces.length > window.common.HASHTAGS.MAX_COUNT) {
-  //     hashtagsInput.setCustomValidity('Хэштегов должно быть не больше 5');
-  //     return false;
-  //   }
-  //   // check for #
-  //   for (var k = 0; k < hashtagsNoSpaces.length; k++) {
-  //     // starts from #
-  //     if (hashtagsNoSpaces[k][0] !== '#') {
-  //       hashtagsInput.setCustomValidity('Хэштеги должны начинаться с символа #');
-  //       return false;
-  //     }
-  //     // contains more than #
-  //     if (hashtagsNoSpaces[i].length === 1) {
-  //       hashtagsInput.setCustomValidity('Хэштегов не может состоять из одного символа #');
-  //       return false;
-  //     }
-  //     // length under or equal 20 symbols including #
-  //     if (hashtagsNoSpaces[i].length > window.common.HASHTAGS.MAX_LENGTH) {
-  //       hashtagsInput.setCustomValidity('Длина хэштега не может быть больше 20 символов');
-  //       return false;
-  //     }
-  //   }
-  //
-  //   for (var i = 0; i < hashtagsNoSpaces.length; i++) {
-  //     for (var j = i; j < hashtagsNoSpaces.length; j++) {
-  //       if (hashtagsNoSpaces[i] === hashtagsNoSpaces[j]) {
-  //         if (i !== j) {
-  //           hashtagsInput.setCustomValidity('Хэштеги не должны повторяться');
-  //           return false;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return true;
-  // };
-
   var validateComment = function () {
     descriptionInput.setCustomValidity('');
     var comment = descriptionInput.value;
