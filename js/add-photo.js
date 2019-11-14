@@ -173,12 +173,18 @@
     hashtags.validate();
     if (!hashtags.isValid()) {
       hashtagsInput.setCustomValidity(hashtags.getErrorMessage());
+      hashtagsInput.reportValidity();
       return false;
     }
     return true;
   };
 
+  var onHashTagInputChange = function () {
+    validateHashtags();
+  };
+
   var Hashtags = function (tags) {
+    // #lkjlkjlj#lkjllkj#ljlkjl #lk;lk;k lk;lk;lk         lk;khjhkjhkhkjjhjhgjhgjhg
     this._hashtagsString = tags;
     this._hashtagsSplit = this._hashtagsString.split(' ');
     this._hashtags = [];
@@ -204,6 +210,10 @@
         }
         if (this._hashtags[j].length === 1) {
           this.setError('Хэштегов не должен состоять только из одного символа #');
+          break;
+        }
+        if (this._hashtags[j].indexOf('#', 1) !== -1) {
+          this.setError('Хэштеги должны быть разделены пробелами');
           break;
         }
         if (this._hashtags[j].length > window.common.HASHTAGS.MAX_LENGTH) {
@@ -248,19 +258,19 @@
 
     if (hashtagValidation && commentValidation) {
       //
-      var onReload = function (evt1) {
+      var onReloadButtonClick = function (evt1) {
         evt1.preventDefault();
         errorMsg.close();
         showAddPhotoForm();
       };
 
-      var onCancel = function (evt2) {
+      var onCancelButtonClick = function (evt2) {
         evt2.preventDefault();
         errorMsg.close();
         closeAddPhotoForm();
       };
 
-      var onOK = function (evt3) {
+      var onOKButtonClick = function (evt3) {
         evt3.preventDefault();
         successMsg.close();
       };
@@ -268,14 +278,14 @@
       var onError = function (message) {
         uploadMsg.close();
         closeAddPhotoForm();
-        errorMsg = new window.common.ErrorMessage(message, ['Попробовать снова', 'Загрузить другой файл'], [onReload, onCancel]);
+        errorMsg = new window.common.ErrorMessage(message, ['Попробовать снова', 'Загрузить другой файл'], [onReloadButtonClick, onCancelButtonClick]);
         errorMsg.open();
       };
 
       var onSuccess = function () {
         uploadMsg.close();
         closeAddPhotoForm();
-        successMsg = new window.common.SuccessMessage(onOK);
+        successMsg = new window.common.SuccessMessage(onOKButtonClick);
         successMsg.open();
       };
 
@@ -384,4 +394,5 @@
   phobosEffectButton.addEventListener('click', onPhobosEffectIconClick);
   heatEffectButton.addEventListener('click', onHeatEffectIconClick);
   sliderPin.addEventListener('mousedown', onSliderPinDragStart);
+  hashtagsInput.addEventListener('input', onHashTagInputChange);
 })();

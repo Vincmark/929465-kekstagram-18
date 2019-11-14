@@ -1,6 +1,6 @@
 'use strict';
 
-window.data = (function () {
+(function () {
   var errorMsg = null;
   var photos = [];
   var getRandomUniqueNumbers = function (min, max, count) {
@@ -14,7 +14,7 @@ window.data = (function () {
     return numArray;
   };
 
-  return {
+  window.data = {
     filteredPhotos: [],
     loadPhotos: function () {
       var outerThis = this;
