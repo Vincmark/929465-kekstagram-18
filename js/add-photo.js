@@ -5,6 +5,10 @@
   var uploadMsg = null;
   var successMsg = null;
 
+  //
+  var isHashtagsValid;
+  var isCommentsValid;
+
   // variables
   var scaleLevel = window.common.SCALE_LEVEL.MAX;
   var effectIntensity = window.common.EFFECT_INTENSITY_LEVEL.MAX;
@@ -58,6 +62,8 @@
     setEffectIntensity();
     setScaleLevel();
     hideIntensitySlider();
+    isHashtagsValid = true;
+    isCommentsValid = true;
   };
 
   var addPhotoFormDeinit = function () {
@@ -180,11 +186,10 @@
   };
 
   var onHashTagInputChange = function () {
-    validateHashtags();
+    isHashtagsValid = validateHashtags();
   };
 
   var Hashtags = function (tags) {
-    // #lkjlkjlj#lkjllkj#ljlkjl #lk;lk;k lk;lk;lk         lk;khjhkjhkhkjjhjhgjhgjhg
     this._hashtagsString = tags;
     this._hashtagsSplit = this._hashtagsString.split(' ');
     this._hashtags = [];
@@ -241,11 +246,16 @@
     return this._errorString;
   };
 
+  var onCommentsInputChange = function () {
+    isCommentsValid = validateComment();
+  };
+
   var validateComment = function () {
     descriptionInput.setCustomValidity('');
     var comment = descriptionInput.value;
     if (comment.length > window.common.COMMENTS.MAX_LENGTH) {
       descriptionInput.setCustomValidity('Комментарий не должен превышать 140 символов');
+      descriptionInput.reportValidity();
       return false;
     }
     return true;
@@ -253,10 +263,8 @@
 
   var onPublishButtonClick = function (evt) {
     evt.preventDefault();
-    var hashtagValidation = validateHashtags();
-    var commentValidation = validateComment();
 
-    if (hashtagValidation && commentValidation) {
+    if (isHashtagsValid && isCommentsValid) {
       //
       var onReloadButtonClick = function (evt1) {
         evt1.preventDefault();
@@ -395,4 +403,5 @@
   heatEffectButton.addEventListener('click', onHeatEffectIconClick);
   sliderPin.addEventListener('mousedown', onSliderPinDragStart);
   hashtagsInput.addEventListener('input', onHashTagInputChange);
+  descriptionInput .addEventListener('input', onCommentsInputChange);
 })();
